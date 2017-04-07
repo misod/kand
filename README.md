@@ -7,3 +7,6 @@ Bra länkar för projektet
 
 // Länk som beskriver Phyton hur man conectar till OGN server
 http://wiki.glidernet.org/wiki:ogn-python
+
+// Lank till hur man conectar till APRS server
+http://www.aprs-is.net/Connecting.aspx
