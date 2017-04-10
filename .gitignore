@@ -3,3 +3,7 @@
 #dir
 
 slabb/
+
+#files
+
+.DS_Store
