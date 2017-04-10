@@ -1,1 +1,1 @@
-# formaterings grejer som ska föra in i excel 
+# formating that has to be done before excel
