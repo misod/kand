@@ -1,1 +1,1 @@
-# databas relaterade grejer med anslutning och övrigt
+# database related stuff

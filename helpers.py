@@ -1,1 +1,1 @@
-# små hjälpfunktioner som inte passar in i någon av de andra filerna
+# helper functions that doesnt belong in any of the other files
