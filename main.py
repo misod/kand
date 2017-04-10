@@ -1,10 +1,19 @@
 # main file to run
+
 import connection
-login_file = "./login.txt"
+import database
+import formatter
+import helpers
+
 from ctypes import *
 from datetime import datetime
 import socket
 import time
+
+login_file = "./login.txt"
+server_address = "aprs.glidernet.org"
+server_port = 14580
+
 
 try:
     # Try loading linux library
@@ -233,12 +242,22 @@ class Login(object):
     #def __init__(self):
 
 # ----- main code ------
-
+print(" -------- MASTER stuff --------- \n\n\n")
 login = Login()
 
 if connection.readLogin(login_file, login):
-
     print("able to read login info")
-
 else:
     print("error: 3 - problem getting login info")
+    exit(2);
+
+libfap.fap_init()
+
+
+while True: # loop untill we want to Exit
+
+    break
+# <----- while break ------>
+# Close libfap.py to avoid memory leak
+libfap.fap_cleanup()
+#connection.close()
