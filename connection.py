@@ -2,11 +2,19 @@
 import os.path
 
 
-def connect(adress, username, password, longitude, latitude, radius):
+def connect(server, port, login_object):
+    #create socket and connect
+
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.connect((server, port))
 
     return ""
 
-def writeLogin(filename, username, password, longitude, latitude, radius):
+def keepalive(connection, login_object):
+
+    return ""
+
+def writeLogin(filename, login_object):
 
     return ""
 
@@ -36,3 +44,11 @@ def readLogin(filename, login_object):
         print("file doesn't exist")
 
     return val_return
+
+def close(sock):
+
+    # close socket -- must be closed to avoid buffer overflow
+    sock.shutdown(0)
+    sock.close()
+
+    return ""
