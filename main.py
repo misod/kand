@@ -232,7 +232,8 @@ class Login(object):
     latitude = 0
     radius = 0
 
-    """def __init__(self, username, password, longitude, latitude, radius):
+    """
+        def __init__(self, username, password, longitude, latitude, radius):
         self.username = username
         self.password = password
         self.longitude = longitude
