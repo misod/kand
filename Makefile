@@ -3,17 +3,11 @@
 clean:
 	rm *.pyc
 
-isort:
-	sh -c "isort --skip-glob=.tox --recursive . "
-
 test: clean
-	py.test --verbose --color=yes $(TEST_PATH)
+	@echo "not implemented any tests for now"
 
 run:
 	python main.py
-
-all:
-
 
 help:
 	@echo "    clean"
