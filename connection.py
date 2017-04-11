@@ -4,9 +4,13 @@ import socket
 
 def connect(server, port, login_object):
     #create socket and connect
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((server, port))
+    except Exception as e:
+        print "error error error....."
+        return -1
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((server, port))
 
     USER = login_object.username              # Set to your username for sending data
     PASSCODE = login_object.password               # Passcode = -1 is readonly, set to your passcode for useranme to send data
@@ -68,7 +72,12 @@ def readLogin(filename, login_object):
 def close(sock):
 
     # close socket -- must be closed to avoid buffer overflow
-    sock.shutdown(0)
-    sock.close()
+    try:
+        sock.shutdown(0)
+        sock.close()
+    except Exception as e:
+        print "ojojojojojojojojoj"
+        return -1
 
-    return ""
+
+    return 0
