@@ -1,14 +1,38 @@
 # connection to the server and reciving stuff
 import os.path
-
+import socket
 
 def connect(server, port, login_object):
     #create socket and connect
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.connect((server, port))
+    except Exception as e:
+        print "error error error....."
+        return -1
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((server, port))
 
-    return ""
+    USER = login_object.username              # Set to your username for sending data
+    PASSCODE = login_object.password               # Passcode = -1 is readonly, set to your passcode for useranme to send data
+    FILTER_DETAILS = "filter filter r/"+ login_object.longitude +"/"+ login_object.latitude +"/"+ login_object.radius +"\n "
+    login = 'user %s pass %s vers kand 0.0.1 %s'  % (USER, PASSCODE , FILTER_DETAILS)
+    #login = 'user %s pass %s vers Python_Example 0.0.1'  % (USER, PASSCODE)
+    try:
+        sock.send(login)
+    except Exception as e:
+        print("it went crazy when trying to connect")
+        return -1
+
+    return sock
+
+def create_socket_file(socket):
+    try:
+        sock_file = socket.makefile()
+    except Exception as e:
+        print "attans............"
+        return -1
+
+    return sock_file
 
 def keepalive(connection, login_object):
 
@@ -48,7 +72,12 @@ def readLogin(filename, login_object):
 def close(sock):
 
     # close socket -- must be closed to avoid buffer overflow
-    sock.shutdown(0)
-    sock.close()
+    try:
+        sock.shutdown(0)
+        sock.close()
+    except Exception as e:
+        print "ojojojojojojojojoj"
+        return -1
 
-    return ""
+
+    return 0
