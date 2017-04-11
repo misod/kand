@@ -1,14 +1,14 @@
 # main file to run
 
-import connection
-import database
-import formatter
-import helpers
-
 from ctypes import *
 from datetime import datetime
 import socket
 import time
+
+import connection
+import database
+import formatter
+import helpers
 
 login_file = "./login.txt"
 server_address = "aprs.glidernet.org"
@@ -250,15 +250,24 @@ if connection.readLogin(login_file, login):
     print("able to read login info")
 else:
     print("error: 3 - problem getting login info")
-    exit(2);
+    exit(2)
 
 libfap.fap_init()
+active_socket = connection.connect(server_address, server_port, login)
+active_socket_file = connection.create_socket_file(active_socket)
+
+if -1 == active_socket_file:
+    print("it is fucked..... crap")
+else :
+    print("seems to be connected")
+
 
 
 while True: # loop untill we want to Exit
 
     break
 # <----- while break ------>
+
 # Close libfap.py to avoid memory leak
 libfap.fap_cleanup()
-#connection.close()
+connection.close(active_socket)
