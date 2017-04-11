@@ -6,14 +6,11 @@ clean:
 isort:
 	sh -c "isort --skip-glob=.tox --recursive . "
 
-lint:
-	flake8 --exclude=.tox
-
-test: clean-pyc
+test: clean
 	py.test --verbose --color=yes $(TEST_PATH)
 
 run:
-	python manage.py runserver
+	python main.py
 
 all:
 
