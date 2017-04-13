@@ -3,7 +3,8 @@
 #dir
 
 slabb/
-logFiles/*
+logFiles/packetLog.txt
+logFiles/
 
 #files
 
