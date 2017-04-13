@@ -2,6 +2,9 @@
 import os.path
 import socket
 
+prog_name = "Kand"
+prog_version = "0.0.2"
+
 def connect(server, port, login_object):
     #create socket and connect
     try:
@@ -15,7 +18,7 @@ def connect(server, port, login_object):
     USER = login_object.username              # Set to your username for sending data
     PASSCODE = login_object.password               # Passcode = -1 is readonly, set to your passcode for useranme to send data
     FILTER_DETAILS = "filter filter r/"+ login_object.longitude +"/"+ login_object.latitude +"/"+ login_object.radius +"\n "
-    login = 'user %s pass %s vers kand 0.0.1 %s'  % (USER, PASSCODE , FILTER_DETAILS)
+    login = 'user %s pass %s vers %s %s %s'  % (USER, PASSCODE, prog_name, prog_version, FILTER_DETAILS)
     #login = 'user %s pass %s vers Python_Example 0.0.1'  % (USER, PASSCODE)
     try:
         sock.send(login)
@@ -80,4 +83,4 @@ def close(sock):
         return -1
 
 
-    return 0
+    return 1
