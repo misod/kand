@@ -3,8 +3,8 @@
 clean:
 	rm *.pyc
 
-test: clean
-	@echo "not implemented any tests for now"
+test:
+	@echo "\n      Not implemented any tests for now \n"
 
 run:
 	python main.py
