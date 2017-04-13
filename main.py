@@ -258,13 +258,19 @@ active_socket_file = connection.create_socket_file(active_socket)
 
 if -1 == active_socket_file:
     print("it is fucked..... crap")
-else :
+else:
     print("seems to be connected")
 
-
-
+keepalive_time = time.time()
+current_time = time.time()
 while True: # loop untill we want to Exit
+    current_time = time.time()
 
+    if(current_time - keepalive_time) > 900:
+        connection.keepalive(active_socket_file)
+        keepalive_time = current_time
+
+    
 
 
     break

@@ -37,9 +37,17 @@ def create_socket_file(socket):
 
     return sock_file
 
-def keep_alive(connection, login_object):
+def keepalive(connection_file):
+    try:
+        connection_file.write("keepalive")
+        connection_file.flush()
+        # here we send a log message of when the keepalive was sent so we can trace what happens
+    except Exception, e:
+        #for now we just print, but in the long run we log to file
+        print "this didn't go as planed %s" % (e)
+        return 0
 
-    return ""
+    return 1
 
 def write_login(filename, login_object):
 
