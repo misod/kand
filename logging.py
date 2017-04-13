@@ -103,7 +103,7 @@ def log_packet(logMessage):
                 print("Message logged")
                 val_return = 1
 
-            except Exception:
+            except Exception, e:
                 print("Error writing to logfile")
 
             finally:

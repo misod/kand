@@ -10,6 +10,7 @@ import connection
 import database
 import formatter
 import helpers
+import logging
 
 login_file = "./login.txt"
 server_address = "aprs.glidernet.org"
@@ -276,11 +277,9 @@ while True: # loop untill we want to Exit
             keepalive_time = current_time
 
         packet_str = connection.get_message(active_socket_file)
+        logging.log_packet(packet_str)
         # Parse packet using libfap.py into fields to process, eg:
         packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
-
-        print 'Callsign is: %s' % (packet_parsed[0].src_callsign)
-        print 'Packet body returned is: %s\n' % (packet_parsed[0].body)
 
         if len(packet_str) == 0:
             print "Read returns zero length string. Failure.  Orderly closeout"
