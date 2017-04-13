@@ -86,9 +86,21 @@ def close(sock):
     try:
         sock.shutdown(0)
         sock.close()
+        print "socket closed"
     except Exception as e:
         print "ojojojojojojojojoj"
         return -1
 
 
     return 1
+
+def get_message(connection_file):
+    try:
+        # Read packet string from socket
+        packet_str = connection_file.readline()
+        print "packet string length is: ", len(packet_str), " packet is: ", packet_str
+    except socket.error:
+        print "Socket error on readline"
+        return ""
+
+    return packet_str
