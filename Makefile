@@ -4,7 +4,7 @@ clean:
 	rm *.pyc
 
 test:
-	@echo "\n      Not implemented any tests for now \n"
+	python testLogging.py
 
 run:
 	python main.py

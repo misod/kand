@@ -100,7 +100,6 @@ def log_packet(logMessage):
             try:
                 logMessage = logMessage + "\n"
                 log.write(logMessage)
-                print("Message logged")
                 val_return = 1
 
             except Exception, e:

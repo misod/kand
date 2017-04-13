@@ -3,7 +3,7 @@
 #dir
 
 slabb/
-logFiles/
+logFiles/*
 
 #files
 

@@ -277,7 +277,8 @@ while True: # loop untill we want to Exit
             keepalive_time = current_time
 
         packet_str = connection.get_message(active_socket_file)
-        logging.log_packet(packet_str)
+        if not logging.log_packet(packet_str):
+            logging.add_log(1, "logging the flight packets went wrong")
         # Parse packet using libfap.py into fields to process, eg:
         packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
 
