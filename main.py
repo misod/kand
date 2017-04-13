@@ -278,6 +278,7 @@ while True: # loop untill we want to Exit
         packet_str = connection.get_message(active_socket_file)
         # Parse packet using libfap.py into fields to process, eg:
         packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
+
         print 'Callsign is: %s' % (packet_parsed[0].src_callsign)
         print 'Packet body returned is: %s\n' % (packet_parsed[0].body)
 
@@ -287,6 +288,8 @@ while True: # loop untill we want to Exit
 
         if(not test):
             print "varible toggled"
+
+
     except KeyboardInterrupt:
         print "bye bye"
         break

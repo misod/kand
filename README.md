@@ -1,6 +1,6 @@
-# kand
+# Kand
 
-här kan vi ju ha någon fin beskrivning över vårat projekt
+Här kan vi ju ha någon fin beskrivning över vårat projekt
 
 Bra länkar för projektet
 
