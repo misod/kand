@@ -1,4 +1,7 @@
 import os.path
+import sys
+
+directory = os.path.join(sys.path[0], "logFiles")
 
 """
 Param:
@@ -55,6 +58,7 @@ Summary:
 Attempts to write the given log message to the regular log file
 """
 def Log(logMessage, logFile):
+    logFile = os.path.join(directory, logFile)
     val_return = 0
 
     if os.path.isfile(logFile) and (os.access(logFile, os.W_OK)):
@@ -87,10 +91,11 @@ used to store FLARM data packets during development
 """
 def logPacket(logMessage):
     val_return = 0
+    path = os.path.join(directory, "packetLog.txt")
 
-    if os.path.isfile("packetLog.txt") and os.access("packetLog.txt", os.W_OK):
+    if os.path.isfile(path) and os.access(path, os.W_OK):
 
-        with open("packetLog.txt", 'a') as log:
+        with open(path, 'a') as log:
 
             try:
                 logMessage = logMessage + "\n"
