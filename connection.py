@@ -37,15 +37,23 @@ def create_socket_file(socket):
 
     return sock_file
 
-def keepalive(connection, login_object):
+def keepalive(connection_file):
+    try:
+        connection_file.write("keepalive")
+        connection_file.flush()
+        # here we send a log message of when the keepalive was sent so we can trace what happens
+    except Exception, e:
+        #for now we just print, but in the long run we log to file
+        print "this didn't go as planed %s" % (e)
+        return 0
+
+    return 1
+
+def write_login(filename, login_object):
 
     return ""
 
-def writeLogin(filename, login_object):
-
-    return ""
-
-def readLogin(filename, login_object):
+def read_login(filename, login_object):
 
     val_return = 0
 
@@ -78,9 +86,21 @@ def close(sock):
     try:
         sock.shutdown(0)
         sock.close()
+        print "socket closed"
     except Exception as e:
         print "ojojojojojojojojoj"
         return -1
 
 
     return 1
+
+def get_message(connection_file):
+    try:
+        # Read packet string from socket
+        packet_str = connection_file.readline()
+        print "packet string length is: ", len(packet_str), " packet is: ", packet_str
+    except socket.error:
+        print "Socket error on readline"
+        return ""
+
+    return packet_str

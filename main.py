@@ -4,6 +4,7 @@ from ctypes import *
 from datetime import datetime
 import socket
 import time
+import signal
 
 import connection
 import database
@@ -13,7 +14,8 @@ import helpers
 login_file = "./login.txt"
 server_address = "aprs.glidernet.org"
 server_port = 14580
-
+keep_running = True
+test = True
 
 try:
     # Try loading linux library
@@ -246,7 +248,7 @@ class Login(object):
 print(" -------- MASTER stuff --------- \n\n\n")
 login = Login()
 
-if connection.readLogin(login_file, login):
+if connection.read_login(login_file, login):
     print("able to read login info")
 else:
     print("error: 3 - problem getting login info")
@@ -258,16 +260,36 @@ active_socket_file = connection.create_socket_file(active_socket)
 
 if -1 == active_socket_file:
     print("it is fucked..... crap")
-else :
+else:
     print("seems to be connected")
 
+keepalive_time = time.time()
+current_time = time.time()
 
 
 while True: # loop untill we want to Exit
+    try:
+        current_time = time.time()
 
+        if(current_time - keepalive_time) > 900:
+            connection.keepalive(active_socket_file)
+            keepalive_time = current_time
 
+        packet_str = connection.get_message(active_socket_file)
+        # Parse packet using libfap.py into fields to process, eg:
+        packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
+        print 'Callsign is: %s' % (packet_parsed[0].src_callsign)
+        print 'Packet body returned is: %s\n' % (packet_parsed[0].body)
 
-    break
+        if len(packet_str) == 0:
+            print "Read returns zero length string. Failure.  Orderly closeout"
+            break
+
+        if(not test):
+            print "varible toggled"
+    except KeyboardInterrupt:
+        print "bye bye"
+        break
 # <----- while break ------>
 
 # Close libfap.py to avoid memory leak
