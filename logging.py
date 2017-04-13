@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import os.path
 import sys
 
@@ -113,3 +114,6 @@ def logPacket(logMessage):
     else:
         print("Logfile doesn't exist")
         return val_return
+=======
+# error logging management goes here
+>>>>>>> master
