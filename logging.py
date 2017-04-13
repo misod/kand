@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import os.path
 import sys
 
@@ -13,12 +12,12 @@ Returns 1 if successfull, otherwise 0
 Summary:
 Evaluates the sent logType, chooses a correct auxilliary function for each type of error.
 """
-def addLog(logType, logMessage):
+def add_log(logType, logMessage):
     val_return = 0
 
     if logType == 0:
 
-        if Log(logMessage, "simpleLog.txt"):
+        if log(logMessage, "simpleLog.txt"):
             val_return = 1
             print("Message logged")
 
@@ -27,7 +26,7 @@ def addLog(logType, logMessage):
 
     elif logType == 1:
 
-        if Log(logMessage, "smallErrorLog.txt"):
+        if log(logMessage, "smallErrorLog.txt"):
             val_return = 1
             print("Message logged")
 
@@ -36,7 +35,7 @@ def addLog(logType, logMessage):
 
     elif logType == 2:
 
-        if Log(logMessage, "bigErrorLog.txt"):
+        if log(logMessage, "bigErrorLog.txt"):
             val_return = 1
             print("Message logged")
 
@@ -58,7 +57,7 @@ Output:
 Summary:
 Attempts to write the given log message to the regular log file
 """
-def Log(logMessage, logFile):
+def log(logMessage, logFile):
     logFile = os.path.join(directory, logFile)
     val_return = 0
 
@@ -90,7 +89,7 @@ returns 1 if message logged, 0 if failed
 Summary:
 used to store FLARM data packets during development
 """
-def logPacket(logMessage):
+def log_packet(logMessage):
     val_return = 0
     path = os.path.join(directory, "packetLog.txt")
 
