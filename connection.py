@@ -37,15 +37,15 @@ def create_socket_file(socket):
 
     return sock_file
 
-def keepalive(connection, login_object):
+def keep_alive(connection, login_object):
 
     return ""
 
-def writeLogin(filename, login_object):
+def write_login(filename, login_object):
 
     return ""
 
-def readLogin(filename, login_object):
+def read_login(filename, login_object):
 
     val_return = 0
 

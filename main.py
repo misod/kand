@@ -246,7 +246,7 @@ class Login(object):
 print(" -------- MASTER stuff --------- \n\n\n")
 login = Login()
 
-if connection.readLogin(login_file, login):
+if connection.read_login(login_file, login):
     print("able to read login info")
 else:
     print("error: 3 - problem getting login info")
