@@ -2,8 +2,8 @@
 
 #dir
 
-./slabb/
-./logFiles/*
+slabb/
+logFiles/*
 
 #files
 
