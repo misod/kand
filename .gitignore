@@ -1,0 +1,11 @@
+# gitignore
+
+#dir
+
+slabb/
+
+#files
+
+.DS_Store
+login.txt
+*.pyc
