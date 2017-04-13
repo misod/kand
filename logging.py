@@ -1,3 +1,5 @@
+import os.path
+
 """
 Param:
 logType, an int corresponding to which type of log, 0 is a regular log, 1 is a smaller error log and 2 is a major error log
@@ -12,7 +14,7 @@ def addLog(logType, logMessage):
 
     if logType == 0:
 
-        if Log(logMessage, simpleLog):
+        if Log(logMessage, "simpleLog.txt"):
             val_return = 1
             print("Message logged")
 
@@ -21,7 +23,7 @@ def addLog(logType, logMessage):
 
     elif logType == 1:
 
-        if Log(logMessage, smallErrorLog):
+        if Log(logMessage, "smallErrorLog.txt"):
             val_return = 1
             print("Message logged")
 
@@ -30,7 +32,7 @@ def addLog(logType, logMessage):
 
     elif logType == 2:
 
-        if Log(logMessage, bigErrorLog):
+        if Log(logMessage, "bigErrorLog.txt"):
             val_return = 1
             print("Message logged")
 
@@ -55,11 +57,12 @@ Attempts to write the given log message to the regular log file
 def Log(logMessage, logFile):
     val_return = 0
 
-    if os.path.isfile(logFile) and (os.access(logFile), os.W_OK):
+    if os.path.isfile(logFile) and (os.access(logFile, os.W_OK)):
 
-        with open(logFIle, 'a') as log:
+        with open(logFile, 'a') as log:
 
             try:
+                logMessage = logMessage + "\n"
                 log.write(logMessage)
                 val_return = 1
 
@@ -85,12 +88,14 @@ used to store FLARM data packets during development
 def logPacket(logMessage):
     val_return = 0
 
-    if os.path.isfile(packetLog) and os.access(packetLog, os.W_OK):
+    if os.path.isfile("packetLog.txt") and os.access("packetLog.txt", os.W_OK):
 
-        with open(packetLog, 'a') as log:
+        with open("packetLog.txt", 'a') as log:
 
             try:
+                logMessage = logMessage + "\n"
                 log.write(logMessage)
+                print("Message logged")
                 val_return = 1
 
             except Exception:
