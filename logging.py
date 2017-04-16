@@ -79,6 +79,8 @@ def log(logMessage, logFile):
 
     else:
         print("Logfile doesn't exist")
+        file = open(logFile, 'w+')
+        file.close()
         return val_return
 
 """
@@ -100,10 +102,9 @@ def log_packet(logMessage):
             try:
                 logMessage = logMessage + "\n"
                 log.write(logMessage)
-                print("Message logged")
                 val_return = 1
 
-            except Exception:
+            except Exception, e:
                 print("Error writing to logfile")
 
             finally:
@@ -112,4 +113,6 @@ def log_packet(logMessage):
 
     else:
         print("Logfile doesn't exist")
+        file = open(path, 'w+')
+        file.close()
         return val_return
