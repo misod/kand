@@ -18,6 +18,7 @@ server_port = 14580
 keep_running = True
 test = True
 
+
 try:
     # Try loading linux library
 #    libfap = cdll.LoadLibrary('libfap.so')
@@ -266,6 +267,7 @@ else:
 
 keepalive_time = time.time()
 current_time = time.time()
+plane_id_array = database.get_plane_id()
 
 
 while True: # loop untill we want to Exit
@@ -281,6 +283,12 @@ while True: # loop untill we want to Exit
             logging.add_log(1, "logging the flight packets went wrong")
         # Parse packet using libfap.py into fields to process, eg:
         packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
+
+        if helpers.relevant_package(plane_id_array, packet_parsed):
+            print "it is from one of our planes"
+        else:
+            print packet_parsed[0].src_callsign
+
 
         if len(packet_str) == 0:
             print "Read returns zero length string. Failure.  Orderly closeout"
