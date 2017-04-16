@@ -1,12 +1,12 @@
 # gitignore
 
-#dir
+#dir ------------------
 
 slabb/
 logFiles/packetLog.txt
 logFiles/
 
-#files
+#files -----------------
 
 .DS_Store
 login.txt
