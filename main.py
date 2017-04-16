@@ -16,7 +16,6 @@ login_file = "./login.txt"
 server_address = "aprs.glidernet.org"
 server_port = 14580
 keep_running = True
-test = True
 
 
 try:
@@ -293,9 +292,6 @@ while True: # loop untill we want to Exit
         if len(packet_str) == 0:
             print "Read returns zero length string. Failure.  Orderly closeout"
             break
-
-        if(not test):
-            print "varible toggled"
 
 
     except KeyboardInterrupt:
