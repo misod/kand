@@ -22,5 +22,7 @@ def new_flight():
 
 def get_airfields_height():
     # the height above sealevel for parked planes
+    # mabye set this as a variable that the users define when setting up the system
+    # or let the program determine this and se how it behaves
 
     return ""
