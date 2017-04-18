@@ -11,6 +11,7 @@ import database
 import formatter
 import helpers
 import logging
+import packets
 
 login_file = "./login.txt"
 server_address = "aprs.glidernet.org"
@@ -284,9 +285,11 @@ while True: # loop untill we want to Exit
         # Parse packet using libfap.py into fields to process, eg:
         packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
 
-        if helpers.relevant_package(plane_id_array, packet_parsed):
+        if packets.relevant_package(plane_id_array, packet_parsed):
             if not logging.log_packet(packet_str):
                 logging.add_log(1, "logging the flight packets went wrong")
+
+
     #    else:
     #        print packet_parsed[0].src_callsign
 
