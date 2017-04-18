@@ -14,3 +14,9 @@ def relevant_package(array_whit_id, package):
             logging.add_log(1, "galet->helpers, funk relevant_package")
 
         return False
+
+def processing(package):
+
+
+
+    return True

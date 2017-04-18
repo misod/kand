@@ -289,7 +289,8 @@ while True: # loop untill we want to Exit
             if not logging.log_packet(packet_str):
                 logging.add_log(1, "logging the flight packets went wrong")
 
-
+            if not packets.processing(packet_parsed):
+                logging.add_log(2, "main -> processing packet went wrong")
     #    else:
     #        print packet_parsed[0].src_callsign
 
