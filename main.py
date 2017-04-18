@@ -269,7 +269,7 @@ else:
 
 keepalive_time = time.time()
 current_time = time.time()
-plane_id_array = database.get_plane_id()
+plane_id_array = database.get_plane_ids()
 
 
 while True: # loop untill we want to Exit
