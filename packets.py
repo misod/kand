@@ -16,7 +16,19 @@ def relevant_package(array_whit_id, package):
         return False
 
 def processing(package):
-
-
+    #determin if plane is on ground
+    #se which is the towing plane
+    #log to database
+    #starting flight or landing?
 
     return True
+
+def determine_towing_plane(package):
+
+
+    return ""
+
+def plane_on_ground(package):
+
+
+    return ""
