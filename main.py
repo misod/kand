@@ -11,6 +11,7 @@ import database
 import formatter
 import helpers
 import logging
+import packets
 
 login_file = "./login.txt"
 server_address = "aprs.glidernet.org"
@@ -247,12 +248,14 @@ class Login(object):
 
 # ----- main code ------
 print(" -------- MASTER stuff --------- \n\n\n")
+logging.add_log(0, "------------------- Start ------------------------------------")
 login = Login()
 
 if connection.read_login(login_file, login):
-    print("able to read login info")
+    logging.add_log(0, "managed to read login")
 else:
     print("error: 3 - problem getting login info")
+    logging.add_log(2, "did not manage to read login")
     exit(2)
 
 libfap.fap_init()
@@ -260,9 +263,9 @@ active_socket = connection.connect(server_address, server_port, login)
 active_socket_file = connection.create_socket_file(active_socket)
 
 if -1 == active_socket_file:
-    print("it is fucked..... crap")
+    logging.add_log(2, "did not managed to create socket file")
 else:
-    print("seems to be connected")
+    logging.add_log(0, "managed to connect to server and create socket file")
 
 keepalive_time = time.time()
 current_time = time.time()
@@ -282,9 +285,12 @@ while True: # loop untill we want to Exit
         # Parse packet using libfap.py into fields to process, eg:
         packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
 
-        if helpers.relevant_package(plane_id_array, packet_parsed):
+        if packets.relevant_package(plane_id_array, packet_parsed):
             if not logging.log_packet(packet_str):
                 logging.add_log(1, "logging the flight packets went wrong")
+
+            if not packets.processing(packet_parsed):
+                logging.add_log(2, "main -> processing packet went wrong")
     #    else:
     #        print packet_parsed[0].src_callsign
 
@@ -298,7 +304,7 @@ while True: # loop untill we want to Exit
         print "bye bye"
         break
 # <----- while break ------>
-
+logging.add_log(0, "------------------- Stop ------------------------------------")
 # Close libfap.py to avoid memory leak
 libfap.fap_cleanup()
 connection.close(active_socket)
