@@ -9,7 +9,7 @@ def relevant_package(array_whit_id, package):
                 return True
 
         except Exception as e:
-            logging.add_log(1, "galet helpers, funk relevant_package")
+            logging.add_log(1, "galet-> helpers, funk relevant_package")
 
         return False
 

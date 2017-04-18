@@ -19,7 +19,7 @@ def add_log(logType, logMessage):
 
         if log(logMessage, "simpleLog.txt"):
             val_return = 1
-            print("Message logged")
+            #print("Message logged")
 
         else:
             print("Error: Problem logging the message")
@@ -28,7 +28,7 @@ def add_log(logType, logMessage):
 
         if log(logMessage, "smallErrorLog.txt"):
             val_return = 1
-            print("Message logged")
+            #print("Message logged")
 
         else:
             print("Error: Problem logging the message")
@@ -37,7 +37,7 @@ def add_log(logType, logMessage):
 
         if log(logMessage, "bigErrorLog.txt"):
             val_return = 1
-            print("Message logged")
+            #print("Message logged")
 
         else:
             print("Error: Problem logging the message")
