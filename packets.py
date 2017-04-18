@@ -27,9 +27,10 @@ def processing(package):
 
     if active_flight(packets):
         #do some more processing
-        # se if it's time re regiser ended flight
+        # se if it's time to regiser ended flight
     elif not plane_stationary:
         # time to register a new_flight
+        # find out towing plane
 
     return True
 
