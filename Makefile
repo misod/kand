@@ -1,6 +1,6 @@
 #Makefile for the prodject FLARM
 
-clean:
+clean: cleanFiles
 	rm *.pyc
 
 test:
