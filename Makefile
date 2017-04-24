@@ -1,13 +1,19 @@
 #Makefile for the prodject FLARM
 
-clean:
+clean: cleanFiles
 	rm *.pyc
 
 test:
-	@echo "\n      Not implemented any tests for now \n"
+	python testLogging.py
 
 run:
 	python main.py
+
+cleanFiles:
+	echo > logFiles/packetLog.txt
+	echo > logFiles/bigErrorLog.txt
+	echo > logFiles/smallErrorLog.txt
+	echo > logFiles/simpleLog.txt
 
 help:
 	@echo "    clean"

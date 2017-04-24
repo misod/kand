@@ -12,35 +12,35 @@ Returns 1 if successfull, otherwise 0
 Summary:
 Evaluates the sent logType, chooses a correct auxilliary function for each type of error.
 """
-def addLog(logType, logMessage):
+def add_log(logType, logMessage):
     val_return = 0
 
     if logType == 0:
 
-        if Log(logMessage, "simpleLog.txt"):
+        if log(logMessage, "simpleLog.txt"):
             val_return = 1
-            print("Message logged")
+            #print("Message logged")
 
         else:
-            print("Error: Problem logging the message")
+            print("Error: Problem logging the message, simpleLog.txt")
 
     elif logType == 1:
 
-        if Log(logMessage, "smallErrorLog.txt"):
+        if log(logMessage, "smallErrorLog.txt"):
             val_return = 1
-            print("Message logged")
+            #print("Message logged")
 
         else:
-            print("Error: Problem logging the message")
+            print("Error: Problem logging the message, smallErrorLog.txt")
 
     elif logType == 2:
 
-        if Log(logMessage, "bigErrorLog.txt"):
+        if log(logMessage, "bigErrorLog.txt"):
             val_return = 1
-            print("Message logged")
+            #print("Message logged")
 
         else:
-            print("Error: Problem logging the message")
+            print("Error: Problem logging the message, bigErrorLog")
 
     else:
         print("Error: Invalid log type")
@@ -57,7 +57,7 @@ Output:
 Summary:
 Attempts to write the given log message to the regular log file
 """
-def Log(logMessage, logFile):
+def log(logMessage, logFile):
     logFile = os.path.join(directory, logFile)
     val_return = 0
 
@@ -71,7 +71,7 @@ def Log(logMessage, logFile):
                 val_return = 1
 
             except Exception:
-                print("Error writing to logfile")
+                print("Error writing to logfile, packet")
 
             finally:
                 log.close()
@@ -79,6 +79,8 @@ def Log(logMessage, logFile):
 
     else:
         print("Logfile doesn't exist")
+        file = open(logFile, 'w+')
+        file.close()
         return val_return
 
 """
@@ -89,7 +91,7 @@ returns 1 if message logged, 0 if failed
 Summary:
 used to store FLARM data packets during development
 """
-def logPacket(logMessage):
+def log_packet(logMessage):
     val_return = 0
     path = os.path.join(directory, "packetLog.txt")
 
@@ -100,10 +102,9 @@ def logPacket(logMessage):
             try:
                 logMessage = logMessage + "\n"
                 log.write(logMessage)
-                print("Message logged")
                 val_return = 1
 
-            except Exception:
+            except Exception, e:
                 print("Error writing to logfile")
 
             finally:
@@ -112,4 +113,6 @@ def logPacket(logMessage):
 
     else:
         print("Logfile doesn't exist")
+        file = open(path, 'w+')
+        file.close()
         return val_return
