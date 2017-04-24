@@ -2,6 +2,7 @@ CREATE TABLE Flight_Data (
 Flight_No int PRIMARY KEY NOT NULL,
 Takeoff DATETIME,
 Landing DATETIME,
+Max_Height INT,
 Logged_Date DATE,
 Flight_Type VARCHAR(150) NOT NULL,
 Glider_id VARCHAR(150) NOT NULL,
