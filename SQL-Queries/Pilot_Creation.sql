@@ -1,0 +1,4 @@
+CREATE TABLE Pilot (
+Pilot_ID int PRIMARY KEY NOT NULL,
+Name VARCHAR(150)
+);
