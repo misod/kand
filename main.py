@@ -248,7 +248,11 @@ class Login(object):
 
 # ----- main code ------
 print(" -------- MASTER stuff --------- \n\n\n")
-logging.add_log(0, "------------------- Start ------------------------------------")
+now = time.strftime("%c")
+logging.add_log(0, ("------------------- Start ------- %s ------------------" % now ))
+logging.add_log(1, ("------------------- Start ------- %s ------------------" % now ))
+logging.add_log(2, ("------------------- Start ------- %s ------------------" % now ))
+logging.log_packet("------------------- Start ------- %s ------------------" % now )
 login = Login()
 
 if connection.read_login(login_file, login):
@@ -266,6 +270,7 @@ if -1 == active_socket_file:
     logging.add_log(2, "did not managed to create socket file")
 else:
     logging.add_log(0, "managed to connect to server and create socket file")
+
 
 keepalive_time = time.time()
 current_time = time.time()
@@ -304,7 +309,11 @@ while True: # loop untill we want to Exit
         print "bye bye"
         break
 # <----- while break ------>
-logging.add_log(0, "------------------- Stop ------------------------------------")
+now = time.strftime("%c")
+logging.add_log(0, ("------------------- Stop  ------- %s ------------------" % now) )
+logging.add_log(1, ("------------------- Stop  ------- %s ------------------" % now) )
+logging.add_log(2, ("------------------- Stop  ------- %s ------------------" % now) )
+logging.log_packet ("------------------- Stop  ------- %s ------------------" % now)
 # Close libfap.py to avoid memory leak
 libfap.fap_cleanup()
 connection.close(active_socket)

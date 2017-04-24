@@ -9,6 +9,12 @@ test:
 run:
 	python main.py
 
+cleanFiles:
+	echo > logFiles/packetLog.txt
+	echo > logFiles/bigErrorLog.txt
+	echo > logFiles/smallErrorLog.txt
+	echo > logFiles/simpleLog.txt
+
 help:
 	@echo "    clean"
 	@echo "        rm *.pyc"

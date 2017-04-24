@@ -22,7 +22,7 @@ def add_log(logType, logMessage):
             #print("Message logged")
 
         else:
-            print("Error: Problem logging the message")
+            print("Error: Problem logging the message, simpleLog.txt")
 
     elif logType == 1:
 
@@ -31,7 +31,7 @@ def add_log(logType, logMessage):
             #print("Message logged")
 
         else:
-            print("Error: Problem logging the message")
+            print("Error: Problem logging the message, smallErrorLog.txt")
 
     elif logType == 2:
 
@@ -40,7 +40,7 @@ def add_log(logType, logMessage):
             #print("Message logged")
 
         else:
-            print("Error: Problem logging the message")
+            print("Error: Problem logging the message, bigErrorLog")
 
     else:
         print("Error: Invalid log type")
@@ -71,7 +71,7 @@ def log(logMessage, logFile):
                 val_return = 1
 
             except Exception:
-                print("Error writing to logfile")
+                print("Error writing to logfile, packet")
 
             finally:
                 log.close()
