@@ -13,7 +13,7 @@ def relevant_package(array_whit_id, package):
                 return True
 
         except Exception as e:
-            logging.add_log(1, "galet->helpers, funk relevant_package")
+            logging.add_log(1, ("galet->packets, funk relevant_package, %s, " % e))
 
         return False
 
@@ -25,13 +25,14 @@ def processing(package):
     #starting flight or landing?
     plane_stationary = plane_on_ground(package)
 
-    if active_flight(packets):
+    if active_flight(package):
         #do some more processing
         # se if it's time to regiser ended flight
+        return false
     elif not plane_stationary:
         # time to register a new_flight
         # find out towing plane
-
+        return false
     return True
 
 def determine_towing_plane(package):
