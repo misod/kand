@@ -6,16 +6,16 @@ import helpers
 threshold_speed = 4
 
 def relevant_package(array_whit_id, package):
-    if package[0].src_callsign is not None and len(package[0].src_callsign) > 4:
+    if package[0].src_callsign is not None and len(package[0].src_callsign) > 7:
         try:
             id_hex = helpers.hex_string_to_int(package[0].src_callsign[3:])
             if helpers.array_contains(array_whit_id, id_hex):
                 return True
 
         except Exception as e:
-            logging.add_log(1, ("galet->packets, funk relevant_package, %s, " % e))
+            logging.add_log(1, ("galet->packets, funk relevant_package, %s, %s" % (e, package[0].orig_packet)))
 
-        return False
+    return False
 
 def processing(package):
 

@@ -310,10 +310,10 @@ while True: # loop untill we want to Exit
         break
 # <----- while break ------>
 now = time.strftime("%c")
-logging.add_log(0, ("------------------- Stop ------- %s ------------------" % now) )
-logging.add_log(1, ("------------------- Stop ------- %s ------------------" % now) )
-logging.add_log(2, ("------------------- Stop ------- %s ------------------" % now) )
-logging.log_packet ("------------------- Stop ------- %s ------------------" % now)
+logging.add_log(0, ("------------------- Stop  ------- %s ------------------" % now) )
+logging.add_log(1, ("------------------- Stop  ------- %s ------------------" % now) )
+logging.add_log(2, ("------------------- Stop  ------- %s ------------------" % now) )
+logging.log_packet ("------------------- Stop  ------- %s ------------------" % now)
 # Close libfap.py to avoid memory leak
 libfap.fap_cleanup()
 connection.close(active_socket)
