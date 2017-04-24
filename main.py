@@ -291,8 +291,8 @@ while True: # loop untill we want to Exit
         packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
 
         if packets.relevant_package(plane_id_array, packet_parsed):
-            if not logging.log_packet(packet_str):
-                logging.add_log(1, "logging the flight packets went wrong")
+            if not logging.log_packet(packet_parsed[0].orig_packet):
+                logging.add_log(1, "logging the flight packets went wrong, %s" % packet_parsed[0].orig_packet)
 
             if not packets.processing(packet_parsed):
                 logging.add_log(2, "main -> processing packet went wrong")

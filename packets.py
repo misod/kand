@@ -6,7 +6,8 @@ import helpers
 threshold_speed = 4
 
 def relevant_package(array_whit_id, package):
-    if package[0].src_callsign is not None and len(package[0].src_callsign) > 7:
+    if package[0].src_callsign is not None and len(package[0].src_callsign) > 6:
+
         try:
             id_hex = helpers.hex_string_to_int(package[0].src_callsign[3:])
             if helpers.array_contains(array_whit_id, id_hex):
@@ -28,11 +29,11 @@ def processing(package):
     if active_flight(package):
         #do some more processing
         # se if it's time to regiser ended flight
-        return false
+        return False
     elif not plane_stationary:
         # time to register a new_flight
         # find out towing plane
-        return false
+        return False
     return True
 
 def determine_towing_plane(package):
