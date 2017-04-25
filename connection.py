@@ -1,9 +1,10 @@
 # connection to the server and reciving stuff
 import os.path
 import socket
+import logging
 
 prog_name = "Kand"
-prog_version = "0.0.2"
+prog_version = "0.0.3"
 
 def connect(server, port, login_object):
     #create socket and connect
@@ -12,7 +13,7 @@ def connect(server, port, login_object):
         sock.connect((server, port))
     except Exception as e:
         print "error error error....."
-        logging.add_log(2, "failed creating a socket -> %s" % e)
+        logging.add_log(2, "Failed creating a socket -> %s" % e)
         return -1
 
 
@@ -24,7 +25,7 @@ def connect(server, port, login_object):
     try:
         sock.send(login)
     except Exception as e:
-        logging.add_log(2, "failed connecting to OGN server -> %s" % e )
+        logging.add_log(2, "Failed connecting to OGN server -> %s" % e )
         return -1
 
     return sock
@@ -33,19 +34,19 @@ def create_socket_file(socket):
     try:
         sock_file = socket.makefile()
     except Exception as e:
-        logging.add_log(2, "problem creating socket file -> %s" % e)
+        logging.add_log(2, "Problem creating socket file -> %s" % e)
         return -1
 
     return sock_file
 
 def keepalive(connection_file):
     try:
-        connection_file.write("keepalive")
+        connection_file.write("Keepalive")
         connection_file.flush()
         # here we send a log message of when the keepalive was sent so we can trace what happens
     except Exception, e:
         #for now we just print, but in the long run we log to file
-        logging.add_log(2, "problem keeping the connection alive -> %s" % e)
+        logging.add_log(2, "Problem keeping the connection alive -> %s" % e)
         return 0
 
     return 1
@@ -71,13 +72,13 @@ def read_login(filename, login_object):
                login_object.radius = log_split[4]
                val_return = 1
            except IOExeption: # whatever reader errors you care about
-                logging.add_log(2, "problem reading user info ---> solve this later on")
+                logging.add_log(2, "Problem reading user info ---> solve this later on")
                # handle error
            finally:
                f.close()
                return val_return
     else:
-        logging.add_log(2, "file whit login non existent")
+        logging.add_log(2, "File whit login non existent")
 
     return val_return
 
@@ -87,9 +88,9 @@ def close(sock):
     try:
         sock.shutdown(0)
         sock.close()
-        logging.add_log(0, "closing socket")
+        logging.add_log(0, "Closing socket")
     except Exception as e:
-        logging.add_log(1, "failed to close socket")
+        logging.add_log(1, "Failed to close socket")
         return -1
 
 

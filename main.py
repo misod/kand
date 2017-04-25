@@ -256,10 +256,9 @@ logging.log_packet("------------------- Start ------- %s ------------------" % n
 login = Login()
 
 if connection.read_login(login_file, login):
-    logging.add_log(0, "managed to read login")
+    logging.add_log(0, "Managed to read login")
 else:
     print("error: 3 - problem getting login info")
-    logging.add_log(2, "did not manage to read login")
     exit(2)
 
 libfap.fap_init()
@@ -267,9 +266,10 @@ active_socket = connection.connect(server_address, server_port, login)
 active_socket_file = connection.create_socket_file(active_socket)
 
 if -1 == active_socket_file:
-    logging.add_log(2, "did not managed to create socket file")
+    logging.add_log(2, "Did not managed to create socket file")
+    exit(2)
 else:
-    logging.add_log(0, "managed to connect to server and create socket file")
+    logging.add_log(0, "Managed to connect to server and create socket file")
 
 
 keepalive_time = time.time()
@@ -292,10 +292,10 @@ while True: # loop untill we want to Exit
 
         if packets.relevant_package(plane_id_array, packet_parsed):
             if not logging.log_packet(packet_str):
-                logging.add_log(1, "logging the flight packets went wrong, %s" % packet_parsed[0].orig_packet)
+                logging.add_log(1, "Logging the flight packets went wrong, %s" % packet_parsed[0].orig_packet)
 
             if not packets.processing(packet_parsed):
-                logging.add_log(2, "main -> processing packet went wrong")
+                logging.add_log(2, "Main -> processing packet went wrong")
     #    else:
     #        print packet_parsed[0].src_callsign
 
@@ -306,14 +306,17 @@ while True: # loop untill we want to Exit
 
 
     except KeyboardInterrupt:
-        print "bye bye"
+        logging.add_log(0, "KeyboardInterrupt detected -> quiting")
         break
 # <----- while break ------>
+
+# Close libfap.py to avoid memory leak
+libfap.fap_cleanup()
+connection.close(active_socket)
+
 now = time.strftime("%c")
 logging.add_log(0, ("------------------- Stop  ------- %s ------------------" % now) )
 logging.add_log(1, ("------------------- Stop  ------- %s ------------------" % now) )
 logging.add_log(2, ("------------------- Stop  ------- %s ------------------" % now) )
 logging.log_packet ("------------------- Stop  ------- %s ------------------" % now)
-# Close libfap.py to avoid memory leak
-libfap.fap_cleanup()
 connection.close(active_socket)
