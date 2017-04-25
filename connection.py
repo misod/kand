@@ -90,7 +90,7 @@ def close(sock):
         sock.close()
         logging.add_log(0, "Closing socket")
     except Exception as e:
-        logging.add_log(1, "Failed to close socket")
+        logging.add_log(1, "Failed to close socket -> %s" % e)
         return -1
 
 
