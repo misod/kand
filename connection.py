@@ -12,6 +12,7 @@ def connect(server, port, login_object):
         sock.connect((server, port))
     except Exception as e:
         print "error error error....."
+        logging.add_log(2, "failed creating a socket -> %s" % e)
         return -1
 
 
@@ -23,7 +24,7 @@ def connect(server, port, login_object):
     try:
         sock.send(login)
     except Exception as e:
-        print("it went crazy when trying to connect")
+        logging.add_log(2, "failed connecting to OGN server -> %s" % e )
         return -1
 
     return sock
@@ -32,7 +33,7 @@ def create_socket_file(socket):
     try:
         sock_file = socket.makefile()
     except Exception as e:
-        print "attans............"
+        logging.add_log(2, "problem creating socket file -> %s" % e)
         return -1
 
     return sock_file
@@ -44,7 +45,7 @@ def keepalive(connection_file):
         # here we send a log message of when the keepalive was sent so we can trace what happens
     except Exception, e:
         #for now we just print, but in the long run we log to file
-        print "this didn't go as planed %s" % (e)
+        logging.add_log(2, "problem keeping the connection alive -> %s" % e)
         return 0
 
     return 1
@@ -70,13 +71,13 @@ def read_login(filename, login_object):
                login_object.radius = log_split[4]
                val_return = 1
            except IOExeption: # whatever reader errors you care about
-                print("problem reading user info \n\n solve this later on")
+                logging.add_log(2, "problem reading user info ---> solve this later on")
                # handle error
            finally:
                f.close()
                return val_return
     else:
-        print("file doesn't exist")
+        logging.add_log(2, "file whit login non existent")
 
     return val_return
 
@@ -86,9 +87,9 @@ def close(sock):
     try:
         sock.shutdown(0)
         sock.close()
-        print "socket closed"
+        logging.add_log(0, "closing socket")
     except Exception as e:
-        print "ojojojojojojojojoj"
+        logging.add_log(1, "failed to close socket")
         return -1
 
 
@@ -99,8 +100,8 @@ def get_message(connection_file):
         # Read packet string from socket
         packet_str = connection_file.readline()
         #print "packet string length is: ", len(packet_str), " packet is: ", packet_str
-    except socket.error:
-        print "Socket error on readline"
+    except socket.error as e:
+        logging.add_log(2, ("Socket error on readline, %s" % e))
         return ""
 
     return packet_str
