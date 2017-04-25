@@ -292,10 +292,10 @@ while True: # loop untill we want to Exit
 
         if packets.relevant_package(plane_id_array, packet_parsed):
             if not logging.log_packet(packet_str):
-                logging.add_log(1, "logging the flight packets went wrong, %s" % packet_parsed[0].orig_packet)
+                logging.add_log(1, "Logging the flight packets went wrong, %s" % packet_parsed[0].orig_packet)
 
             if not packets.processing(packet_parsed):
-                logging.add_log(2, "main -> processing packet went wrong")
+                logging.add_log(2, "Main -> processing packet went wrong")
     #    else:
     #        print packet_parsed[0].src_callsign
 
@@ -306,7 +306,7 @@ while True: # loop untill we want to Exit
 
 
     except KeyboardInterrupt:
-        print "bye bye"
+        logging.add_log(0, "KeyboardInterrupt detected -> quiting")
         break
 # <----- while break ------>
 

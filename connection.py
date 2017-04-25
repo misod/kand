@@ -13,7 +13,7 @@ def connect(server, port, login_object):
         sock.connect((server, port))
     except Exception as e:
         print "error error error....."
-        logging.add_log(2, "failed creating a socket -> %s" % e)
+        logging.add_log(2, "Failed creating a socket -> %s" % e)
         return -1
 
 
@@ -25,7 +25,7 @@ def connect(server, port, login_object):
     try:
         sock.send(login)
     except Exception as e:
-        logging.add_log(2, "failed connecting to OGN server -> %s" % e )
+        logging.add_log(2, "Failed connecting to OGN server -> %s" % e )
         return -1
 
     return sock
@@ -34,19 +34,19 @@ def create_socket_file(socket):
     try:
         sock_file = socket.makefile()
     except Exception as e:
-        logging.add_log(2, "problem creating socket file -> %s" % e)
+        logging.add_log(2, "Problem creating socket file -> %s" % e)
         return -1
 
     return sock_file
 
 def keepalive(connection_file):
     try:
-        connection_file.write("keepalive")
+        connection_file.write("Keepalive")
         connection_file.flush()
         # here we send a log message of when the keepalive was sent so we can trace what happens
     except Exception, e:
         #for now we just print, but in the long run we log to file
-        logging.add_log(2, "problem keeping the connection alive -> %s" % e)
+        logging.add_log(2, "Problem keeping the connection alive -> %s" % e)
         return 0
 
     return 1
