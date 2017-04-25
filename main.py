@@ -249,10 +249,10 @@ class Login(object):
 # ----- main code ------
 print(" -------- MASTER stuff --------- \n\n\n")
 now = time.strftime("%c")
-logging.add_log(0, ("------------------- Start ------- %s ------------------" % now ))
-logging.add_log(1, ("------------------- Start ------- %s ------------------" % now ))
-logging.add_log(2, ("------------------- Start ------- %s ------------------" % now ))
-logging.log_packet("------------------- Start ------- %s ------------------" % now )
+logging.add_log(0, ("------------------- Start ------- %s --------------------------------" % now ))
+logging.add_log(1, ("------------------- Start ------- %s --------------------------------" % now ))
+logging.add_log(2, ("------------------- Start ------- %s --------------------------------" % now ))
+logging.log_packet ("------------------- Start ------- %s --------------------------------" % now )
 login = Login()
 
 if connection.read_login(login_file, login):
@@ -315,8 +315,8 @@ libfap.fap_cleanup()
 connection.close(active_socket)
 
 now = time.strftime("%c")
-logging.add_log(0, ("------------------- Stop  ------- %s ------------------" % now) )
-logging.add_log(1, ("------------------- Stop  ------- %s ------------------" % now) )
-logging.add_log(2, ("------------------- Stop  ------- %s ------------------" % now) )
-logging.log_packet ("------------------- Stop  ------- %s ------------------" % now)
+logging.add_log(0, ("------------------- Stop  ------- %s --------------------------------" % now) )
+logging.add_log(1, ("------------------- Stop  ------- %s --------------------------------" % now) )
+logging.add_log(2, ("------------------- Stop  ------- %s --------------------------------" % now) )
+logging.log_packet ("------------------- Stop  ------- %s --------------------------------" % now)
 connection.close(active_socket)
