@@ -256,7 +256,7 @@ logging.log_packet("------------------- Start ------- %s ------------------" % n
 login = Login()
 
 if connection.read_login(login_file, login):
-    logging.add_log(0, "managed to read login")
+    logging.add_log(0, "Managed to read login")
 else:
     print("error: 3 - problem getting login info")
     exit(2)
@@ -269,7 +269,7 @@ if -1 == active_socket_file:
     logging.add_log(2, "Did not managed to create socket file")
     exit(2)
 else:
-    logging.add_log(0, "managed to connect to server and create socket file")
+    logging.add_log(0, "Managed to connect to server and create socket file")
 
 
 keepalive_time = time.time()
