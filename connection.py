@@ -1,6 +1,7 @@
 # connection to the server and reciving stuff
 import os.path
 import socket
+import logging
 
 prog_name = "Kand"
 prog_version = "0.0.2"

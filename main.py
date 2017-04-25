@@ -259,7 +259,6 @@ if connection.read_login(login_file, login):
     logging.add_log(0, "managed to read login")
 else:
     print("error: 3 - problem getting login info")
-    logging.add_log(2, "did not manage to read login")
     exit(2)
 
 libfap.fap_init()
@@ -267,7 +266,8 @@ active_socket = connection.connect(server_address, server_port, login)
 active_socket_file = connection.create_socket_file(active_socket)
 
 if -1 == active_socket_file:
-    logging.add_log(2, "did not managed to create socket file")
+    logging.add_log(2, "Did not managed to create socket file")
+    exit(2)
 else:
     logging.add_log(0, "managed to connect to server and create socket file")
 
@@ -309,11 +309,14 @@ while True: # loop untill we want to Exit
         print "bye bye"
         break
 # <----- while break ------>
+
+# Close libfap.py to avoid memory leak
+libfap.fap_cleanup()
+connection.close(active_socket)
+
 now = time.strftime("%c")
 logging.add_log(0, ("------------------- Stop  ------- %s ------------------" % now) )
 logging.add_log(1, ("------------------- Stop  ------- %s ------------------" % now) )
 logging.add_log(2, ("------------------- Stop  ------- %s ------------------" % now) )
 logging.log_packet ("------------------- Stop  ------- %s ------------------" % now)
-# Close libfap.py to avoid memory leak
-libfap.fap_cleanup()
 connection.close(active_socket)
