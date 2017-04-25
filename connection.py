@@ -4,7 +4,7 @@ import socket
 import logging
 
 prog_name = "Kand"
-prog_version = "0.0.2"
+prog_version = "0.0.3"
 
 def connect(server, port, login_object):
     #create socket and connect
@@ -72,13 +72,13 @@ def read_login(filename, login_object):
                login_object.radius = log_split[4]
                val_return = 1
            except IOExeption: # whatever reader errors you care about
-                logging.add_log(2, "problem reading user info ---> solve this later on")
+                logging.add_log(2, "Problem reading user info ---> solve this later on")
                # handle error
            finally:
                f.close()
                return val_return
     else:
-        logging.add_log(2, "file whit login non existent")
+        logging.add_log(2, "File whit login non existent")
 
     return val_return
 
@@ -88,9 +88,9 @@ def close(sock):
     try:
         sock.shutdown(0)
         sock.close()
-        logging.add_log(0, "closing socket")
+        logging.add_log(0, "Closing socket")
     except Exception as e:
-        logging.add_log(1, "failed to close socket")
+        logging.add_log(1, "Failed to close socket")
         return -1
 
 
