@@ -6,4 +6,9 @@ def index(request) :
 def contact(request):
     return render(request, 'personal/basic.html',{'content' :['If you would like to contact the developers, pleas email to','logflar@gmail.com']})
 
+def information(request):
+    return render(request, 'personal/basic.html',{'content' :['This site is under development but it will be a log system for gliders when it is done','If you would like to contact the developers, email to','conrad.aslund@gmail.com']})
+
+def flylogs(request):
+    return render(request, 'personal/basic.html',{'content' :['This site is under development but this will be the main button for logs']})
 # Create your views here.

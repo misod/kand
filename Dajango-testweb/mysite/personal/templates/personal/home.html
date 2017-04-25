@@ -1,7 +1,54 @@
 {% extends "personal/header.html" %}
 
 {% block content%}
+<style>
+  .col-md-4{
+    background-color: gray;
+    color: white;
+    text-align: center;
+    padding-right: ($spacer-x * .5) !important;
+  }
+  .col-md-7{
+    background-color: black;
+    color: white;
+    text-align: center;
+  }
+
+</style>
+<body>
 <p>Hey, jag suger men jag testar iaf pung hora</p>
+<div class="container-fluid">
+  <div class="row">
+  <div class="col-md-4">
+
+
+      {% for post in object_list %}
+      <h5>{{post.date|date:"Y-m-d"}}<a href="/log/{{post.id}}"> {{post.title}}</a></h5>
+      {%endfor%}
+
+
+
+    hej hje </div>
+    <div class="col-md-1"></div>
+
+
+
+
+    <div class="col-md-7">bajs</div>
+  </div>
+
+  </div>
+</body>
+ <!-- <div class="row">
+    <div class="col-xs-2"></div>
+    <div class="col-xs-4"></div>
+    <div class="col-xs-6"></div>
+
+  </div>
+  <div class="row">
+    ...
+  </div>
+</div>-->
 
 {% include "personal/includes/htmlsnippet.html" %}
 {% endblock %}
