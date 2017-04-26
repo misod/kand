@@ -10,8 +10,8 @@ urlpatterns = [
     url(r'^contact', views.contact, name = 'contact'),
     url(r'^information', views.information, name = 'information'),
     #url(r'^$', flylogger.views.flylogger, template_name = "flylogger/flylogger.html"),
-    url(r'^$', ListView.as_view(queryset=Post.objects.all().order_by("-date")[:25],
-                                                template_name="log/log.html")),
-                    url(r'^(?P<pk>\d+)$', DetailView.as_view(model=Post,
-                                                             template_name='log/post.html'))
+    #url(r'^$', ListView.as_view(queryset=Post.objects.all().order_by("-date")[:25],
+                                #                template_name="log/log.html")),
+                    #url(r'^(?P<pk>\d+)$', DetailView.as_view(model=Post,
+                                                    #         template_name='log/post.html'))
 ]
