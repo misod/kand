@@ -104,7 +104,7 @@ def log_packet(logMessage):
                 log.write(logMessage)
                 val_return = 1
 
-            except Exception, e:
+            except Exception as e:
                 print("Error writing to logfile")
 
             finally:
