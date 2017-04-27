@@ -93,7 +93,6 @@ def close(sock):
         logging.add_log(1, "Failed to close socket -> %s" % e)
         return -1
 
-
     return 1
 
 def get_message(connection_file):
