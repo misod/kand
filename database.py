@@ -88,12 +88,34 @@ def get_plane_ids(connection):
     return array
 
 def get_started_flight(connection):
+    with connection.cursor() as cursor:
+        sql = "SELECT Glider_id FROM Flight_Data WHERE Landing is NULL"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+        array = list(itertools.chain.from_iterable(result))
+        return array
 
-    return ""
+def new_flight(connection, flight_number, flight_type, glider_id, towing_id):
+    val_return = 0
+    try:
+        if towing_id is None:
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO Flight_Data(Flight_No, Takeoff, Logged_Date, Flight_Type, Glider_id, Flight_Status) VALUES (%s, CURRENT_TIMESTAMP, CURRENT_DATE, %s, %s, 'Ongoing')"
+                cursor.execute(sql, (flight_number, flight_type, glider_id))
+                connection.commit()
+                val_return = 1
+        elif towing_id is not None:
+            with connection.cursor() as cursor:
+                sql = "INSERT INTO Flight_Data(Flight_No, Takeoff, Logged_Date, Flight_Type, Glider_id, Towing_id, Towing_Takeoff, Flight_Status) VALUES (%s, CURRENT_TIMESTAMP, CURRENT_DATE, %s, %s, %s, CURRENT_TIMESTAMP, 'Ongoing')"
+                cursor.execute(sql, (flight_number, flight_type, glider_id, towing_id))
+                connection.commit()
+                val_return = 1
+    except Exception as e:
+        print('Could not start a new flight')
+        logging.add_log(2, 'Failed to start a new flight at database.new_flight() - %s' %e)
 
-def new_flight(connection):
+    return val_return
 
-    return ""
 
 def get_airfields_height():
     # the height above sealevel for parked planes
