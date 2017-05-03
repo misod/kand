@@ -8,6 +8,21 @@ import sys
 #logging.log_packet("Testar en log_packet")
 
 DBCon = database.login()
+#Setup test environment
+#database.add_pilot(DBCon, 1, 'JockTori')
+#database.add_pilot(DBCon, 2, 'Nicole')
+#database.add_pilot(DBCon, 3, 'Micke')
+#database.add_pilot(DBCon, 4, 'Conraaaado')
+
+#database.add_glider(DBCon, 'UDP', '0xAAAAAA')
+#database.add_glider(DBCon, 'APM', '0xAAAAAB')
+#database.add_glider(DBCon, 'UCM', '0xAAAAAC')
+#database.add_glider(DBCon, 'UPU', '0xAAAAAD')
+
+#database.add_tow_plane(DBCon, 'TAP', '0xBBBBBA')
+#database.add_tow_plane(DBCon, 'TUC', '0xBBBBBB')
+#database.add_tow_plane(DBCon, 'TEM', '0xBBBBBC')
+
 print("Gliders registered:")
 print(database.get_glider_ids(DBCon))
 print("Tow planes registered:")
@@ -23,4 +38,10 @@ print(database.get_started_flight(DBCon))
 #database.tow_plane_landing(DBCon, '0xBBBAAA')
 #database.end_flight(DBCon, '0xABCCBA')
 #database.add_flight_notes(DBCon, 2, 'This is a test note')
+#database.add_pilot(DBCon, 4, 'JockTori')
+#print(database.list_pilot(DBCon))
+#database.assign_flight(DBCon, 512, 4, 'Trial Flight')
+#database.reset_surveillance(DBCon)
+#database.surveilled_glider(DBCon, '0xAAAAAA', 4, 'Tyyp')
+#database.surveilled_tow_plane(DBCon, '0xBBBBBB', 1, 'Igen')
 database.logout(DBCon)
