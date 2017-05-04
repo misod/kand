@@ -28,16 +28,19 @@ def processing(glider_ids, towing_ids, package, database_con):
 
     if not active_flight(glider_ids, towing_ids, package, database_con):
 
+
         if package.speed > threshold_speed:
             if helpers.array_contains(glider_ids, package_flarm_id):
-                database.new_flight(database_con, package_flarm_id)
-            elif helpers.array_contains(glider_ids, package_flarm_id):
-                database.new_flight(database_con, package_flarm_id)
-        elif:
-            logging.add_log(0, "plane package recived, not moving fast enough and not active_flight")
+                if not database.new_flight(database_con, package_flarm_id, None, package.timestamp):
+                    logging.add_log(2, "failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
+            elif helpers.array_contains(towing_ids, package_flarm_id):
+                if not database.new_flight(database_con, None, package_flarm_id, package.timestamp):
+                    logging.add_log(2, "failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
+        else:
+            logging.add_log(0, "plane package recived, not moving fast enough and not active_flight ---> %s" %package.orig_packet.encode('string-escape'))
 
 
-def determine_towing_plane(package):
+def determine_connected_plane(package):
 
 
     return ""
