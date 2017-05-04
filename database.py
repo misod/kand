@@ -437,9 +437,10 @@ def reset_surveillance(connection):
         logging.add_log(2, 'Failed to reset daily surveillances at database.reset_surveillance() - %s' %e)
     return val_return
 
+
 def get_airfields_height():
     # the height above sealevel for parked planes
     # mabye set this as a variable that the users define when setting up the system
     # or let the program determine this and see how it behaves
 
-    return ""
+    return 100
