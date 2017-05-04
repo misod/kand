@@ -279,7 +279,9 @@ if active_database_connection is -1:
 
 keepalive_time = time.time()
 current_time = time.time()
-plane_id_array = database.get_plane_ids(active_database_connection)
+glider_id_array = database.get_glider_ids(active_database_connection)
+towingplane_id_array = database.get_tow_plane_ids(active_database_connection)
+plane_id_array = glider_id_array + towingplane_id_array
 
 
 while keep_running: # loop untill we want to Exit
@@ -295,11 +297,11 @@ while keep_running: # loop untill we want to Exit
         # Parse packet using libfap.py into fields to process, eg:
         packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
 
-        if packets.relevant_package(plane_id_array, packet_parsed):
+        if packets.relevant_package(plane_id_array, packet_parsed[0]):
             if not logging.log_packet(packet_str):
-                logging.add_log(1, "Logging the flight packets went wrong, %s" % packet_parsed[0].orig_packet)
+                logging.add_log(1, "Logging the flight packets went wrong, %s" % packet_str)
 
-            if not packets.processing(packet_parsed):
+            if not packets.processing(glider_id_array, towingplane_id_array, packet_parsed[0], active_database_connection):
                 logging.add_log(2, "Main -> processing packet went wrong")
     #    else:
     #        print packet_parsed[0].src_callsign

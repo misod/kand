@@ -3,13 +3,13 @@
 import logging
 import helpers
 
-threshold_speed = 4
+threshold_speed = 30
 
 def relevant_package(array_whit_id, package):
-    if package[0].src_callsign is not None and len(package[0].src_callsign) > 6:
+    if package.src_callsign is not None and len(package.src_callsign) > 6:
 
         try:
-            id_hex = helpers.hex_string_to_int(package[0].src_callsign[3:])
+            id_hex = helpers.get_flarm_id(package)
             if helpers.array_contains(array_whit_id, id_hex):
                 return True
 
@@ -18,34 +18,29 @@ def relevant_package(array_whit_id, package):
 
     return False
 
-def processing(package):
+def processing(glider_ids, towing_id, package, database_con):
 
     #determin if plane is on ground
     #se which is the towing plane
     #log to database
     #starting flight or landing?
-    plane_stationary = plane_on_ground(package)
+    if not active_flight(package):
+        if package.speed > threshold_speed :
+            database.new_flight(database_con, helpers.get_flarm_id(package))
 
-    if active_flight(package):
-        #do some more processing
-        # se if it's time to regiser ended flight
-        return True
-    elif not plane_stationary:
-        # time to register a new_flight
-        # find out towing plane
-        return True
-    return True
+
 
 def determine_towing_plane(package):
 
 
     return ""
 
-def active_flight(packet):
-
-    return True
-
-def plane_on_ground(package):
-
+def active_flight(packet, database_con):
+    plane_falarms = database.get_started_flight(database_con)
+    if plane_falarms is not -1:
+        if helpers.array_contains(plane_falarms, helpers.get_flarm_id(packet)):
+            return True
+        else:
+            return False
 
     return True
