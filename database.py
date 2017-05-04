@@ -43,6 +43,7 @@ def logout(connection):
     val_return = 0
     try:
         connection.close()
+        print('Logout from database successfull')
         val_return = 1
 
 
