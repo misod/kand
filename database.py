@@ -130,13 +130,13 @@ Finds all ongoing flights in the database
 def get_started_flight(connection):
     try:
         with connection.cursor() as cursor:
-            sql = "SELECT Glider_id FROM Flight_Data WHERE Landing is NULL"
+            sql = "SELECT Glider_id, Towing_id, Takeoff FROM Flight_Data WHERE Glider_Landing is NULL"
             cursor.execute(sql)
             result = cursor.fetchall()
             array = list(itertools.chain.from_iterable(result))
             return array
     except Exception as e:
-        print('Could not list all ongoing flights')
+        print('Could not list ongoing flights')
         logging.add_log(1, 'Failed to list all ongoing flights registered in the database at database.get_started_flight() - %s' %e)
         return (-1)
 
