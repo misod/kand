@@ -50,7 +50,7 @@ def processing(glider_ids, towing_ids, package, database_con):
 
     return ret
 
-def determine_connected_plane(package):
+def no_connected_plane(package):
 
     return ""
 
