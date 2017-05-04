@@ -267,17 +267,24 @@ active_socket_file = connection.create_socket_file(active_socket)
 
 if -1 == active_socket_file:
     logging.add_log(2, "Did not managed to create socket file")
-    exit(2)
+    keep_running = False
 else:
     logging.add_log(0, "Managed to connect to server and create socket file")
+
+active_database_connection = database.login()
+
+if active_database_connection is -1:
+    keep_running = False
 
 
 keepalive_time = time.time()
 current_time = time.time()
-plane_id_array = database.get_plane_ids()
+glider_id_array = database.get_glider_ids(active_database_connection)
+towingplane_id_array = database.get_tow_plane_ids(active_database_connection)
+plane_id_array = glider_id_array + towingplane_id_array
 
 
-while True: # loop untill we want to Exit
+while keep_running: # loop untill we want to Exit
     try:
         current_time = time.time()
 
@@ -290,11 +297,11 @@ while True: # loop untill we want to Exit
         # Parse packet using libfap.py into fields to process, eg:
         packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
 
-        if packets.relevant_package(plane_id_array, packet_parsed):
+        if packets.relevant_package(plane_id_array, packet_parsed[0]):
             if not logging.log_packet(packet_str):
-                logging.add_log(1, "Logging the flight packets went wrong, %s" % packet_parsed[0].orig_packet)
+                logging.add_log(1, "Logging the flight packets went wrong, %s" % packet_str)
 
-            if not packets.processing(packet_parsed):
+            if not packets.processing(glider_id_array, towingplane_id_array, packet_parsed[0], active_database_connection):
                 logging.add_log(2, "Main -> processing packet went wrong")
     #    else:
     #        print packet_parsed[0].src_callsign
@@ -306,13 +313,14 @@ while True: # loop untill we want to Exit
 
 
     except KeyboardInterrupt:
-        logging.add_log(0, "KeyboardInterrupt detected -> quiting")
+        logging.add_log(0, "KeyboardInterrupt detected -> Quiting")
         break
 # <----- while break ------>
 
 # Close libfap.py to avoid memory leak
 libfap.fap_cleanup()
 connection.close(active_socket)
+database.logout(active_database_connection)
 
 now = time.strftime("%c")
 logging.add_log(0, ("------------------- Stop  ------- %s --------------------------------" % now) )
