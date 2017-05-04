@@ -1,5 +1,6 @@
 import logging
 import database
+import datetime
 import sys
 
 #logging.add_log(0, "Testar en simple log")
@@ -31,7 +32,11 @@ print(database.get_tow_plane_ids(DBCon))
 #print(database.get_plane_ids(DBCon))
 print("Gliders in the air:")
 print(database.get_started_flight(DBCon))
-#database.new_flight(DBCon, 7, 'TEST7', '0xABCCBA', '0xBBBCCC')
+#print("Please corona")
+#database.new_flight(DBCon, None, '0xBBBBBA', datetime.datetime.time(datetime.datetime.now()))
+#database.assign_glider(DBCon, '0xAAAAAD', '0xBBBBBA')
+#database.assign_tow_plane(DBCon, '0xAAAAAA', '0xBBBBBB')
+#print(int)
 #database.new_flight(DBCon, 8, 'TEST7', '0xAAABBB', '0xBBBAAA')
 #database.add_glider(DBCon, 'AAA', '0xAAABBB')
 #database.add_tow_plane(DBCon, 'BCD', '0xBBBCCC')
