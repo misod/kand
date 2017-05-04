@@ -2,8 +2,8 @@
 import logging
 import itertools
 import pymysql
-
-
+import helpers
+import datetime
 
 """
 Param:
@@ -133,8 +133,9 @@ def get_started_flight(connection):
             sql = "SELECT Glider_id, Towing_id, Takeoff FROM Flight_Data WHERE Glider_Landing is NULL"
             cursor.execute(sql)
             result = cursor.fetchall()
-            array = list(itertools.chain.from_iterable(result))
-            return array
+            array = list(result)
+            new_array = [(helpers.hex_string_to_int(e[0]),helpers.hex_string_to_int(e[1]), e[2].total_seconds()) for e in array]
+            return new_array
     except Exception as e:
         print('Could not list ongoing flights')
         logging.add_log(1, 'Failed to list all ongoing flights registered in the database at database.get_started_flight() - %s' %e)
