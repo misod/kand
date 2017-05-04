@@ -272,6 +272,7 @@ else:
     logging.add_log(0, "Managed to connect to server and create socket file")
 
 active_database_connection = database.login()
+
 if active_database_connection is None:
     keep_running = False
 
@@ -310,7 +311,7 @@ while keep_running: # loop untill we want to Exit
 
 
     except KeyboardInterrupt:
-        logging.add_log(0, "KeyboardInterrupt detected -> quiting")
+        logging.add_log(0, "KeyboardInterrupt detected -> Quiting")
         break
 # <----- while break ------>
 
