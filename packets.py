@@ -18,16 +18,23 @@ def relevant_package(array_whit_id, package):
 
     return False
 
-def processing(glider_ids, towing_id, package, database_con):
+def processing(glider_ids, towing_ids, package, database_con):
 
     #determin if plane is on ground
     #se which is the towing plane
     #log to database
     #starting flight or landing?
-    if not active_flight(package):
-        if package.speed > threshold_speed :
-            database.new_flight(database_con, helpers.get_flarm_id(package))
+    package_flarm_id = helpers.get_flarm_id(package)
 
+    if not active_flight(glider_ids, towing_ids, package, database_con):
+
+        if package.speed > threshold_speed:
+            if helpers.array_contains(glider_ids, package_flarm_id):
+                database.new_flight(database_con, package_flarm_id)
+            elif helpers.array_contains(glider_ids, package_flarm_id):
+                database.new_flight(database_con, package_flarm_id)
+        elif:
+            logging.add_log(0, "plane package recived, not moving fast enough and not active_flight")
 
 
 def determine_towing_plane(package):
@@ -35,7 +42,7 @@ def determine_towing_plane(package):
 
     return ""
 
-def active_flight(packet, database_con):
+def active_flight(glider_ids, towing_ids, packet, database_con):
     plane_falarms = database.get_started_flight(database_con)
     if plane_falarms is not -1:
         if helpers.array_contains(plane_falarms, helpers.get_flarm_id(packet)):
