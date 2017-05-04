@@ -23,7 +23,7 @@ def login():
                                      db="Kand") #The database name
                                      #charset='utf8') #Charset used for database
                                     # cursorclass=pymysql.cursors.DictCursor) #cursorclass used
-        logging.add_log(0, 'Connecting to database successfull')
+        logging.add_log(0, 'Connecting to database successful')
         return connection
 
     except pymysql.err.OperationalError as e:
@@ -44,7 +44,7 @@ def logout(connection):
     val_return = 0
     try:
         connection.close()
-        logging.add_log(0, 'Logging out from database successfull')
+        logging.add_log(0, 'Logging out from database successful')
         val_return = 1
 
 
@@ -437,9 +437,10 @@ def reset_surveillance(connection):
         logging.add_log(2, 'Failed to reset daily surveillances at database.reset_surveillance() - %s' %e)
     return val_return
 
+
 def get_airfields_height():
     # the height above sealevel for parked planes
     # mabye set this as a variable that the users define when setting up the system
     # or let the program determine this and see how it behaves
 
-    return ""
+    return 100
