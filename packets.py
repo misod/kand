@@ -24,33 +24,40 @@ def processing(glider_ids, towing_ids, package, database_con):
     #se which is the towing plane
     #log to database
     #starting flight or landing?
+    ret = False
     package_flarm_id = helpers.get_flarm_id(package)
-
-    if not active_flight(glider_ids, towing_ids, package, database_con):
-
+    active_plane_falarms = active_flight(glider_ids, towing_ids, package, database_con)
+    if active_plane_falarms is -1:
 
         if package.speed > threshold_speed:
             if helpers.array_contains(glider_ids, package_flarm_id):
                 if not database.new_flight(database_con, package_flarm_id, None, package.timestamp):
                     logging.add_log(2, "failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
+                ret = True
             elif helpers.array_contains(towing_ids, package_flarm_id):
                 if not database.new_flight(database_con, None, package_flarm_id, package.timestamp):
                     logging.add_log(2, "failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
+                ret = True
         else:
             logging.add_log(0, "plane package recived, not moving fast enough and not active_flight ---> %s" %package.orig_packet.encode('string-escape'))
+            ret = True
+    elif len(active_plane_falarms) > 0:
+        # ----------> TODO
+        ret = True
+    else:
+        logging.add_log(1, "something went wrong in processing package ---> %s " %package.orig_packet.encode('string-escape'))
+        ret = False
 
+    return ret
 
 def determine_connected_plane(package):
-
 
     return ""
 
 def active_flight(glider_ids, towing_ids, packet, database_con):
-    plane_falarms = database.get_started_flight(database_con)
-    if plane_falarms is not -1:
-        if helpers.array_contains(plane_falarms, helpers.get_flarm_id(packet)):
-            return True
+    active_plane_falarms = database.get_started_flight(database_con)
+    if active_plane_falarms is not -1:
+        if helpers.array_contains(active_plane_falarms, helpers.get_flarm_id(packet)):
+            return active_plane_falarms
         else:
-            return False
-
-    return True
+            return -1
