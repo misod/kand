@@ -23,6 +23,7 @@ def login():
                                      db="Kand") #The database name
                                      #charset='utf8') #Charset used for database
                                     # cursorclass=pymysql.cursors.DictCursor) #cursorclass used
+        logging.add_log(0, 'Connecting to database successfull')
         return connection
 
     except pymysql.err.OperationalError as e:
@@ -43,6 +44,7 @@ def logout(connection):
     val_return = 0
     try:
         connection.close()
+        logging.add_log(0, 'Logging out from database successfull')
         val_return = 1
 
 
