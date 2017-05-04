@@ -4,6 +4,7 @@ import logging
 import helpers
 
 threshold_speed = 30
+dif_time = 90
 
 def relevant_package(array_whit_id, package):
     if package.src_callsign is not None and len(package.src_callsign) > 6:
@@ -32,32 +33,54 @@ def processing(glider_ids, towing_ids, package, database_con):
         if package.speed > threshold_speed:
             if helpers.array_contains(glider_ids, package_flarm_id):
                 if not database.new_flight(database_con, package_flarm_id, None, package.timestamp):
-                    logging.add_log(2, "failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
+                    logging.add_log(2, "Failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
                 ret = True
             elif helpers.array_contains(towing_ids, package_flarm_id):
                 if not database.new_flight(database_con, None, package_flarm_id, package.timestamp):
-                    logging.add_log(2, "failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
+                    logging.add_log(2, "Failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
                 ret = True
         else:
-            logging.add_log(0, "plane package recived, not moving fast enough and not active_flight ---> %s" %package.orig_packet.encode('string-escape'))
+            logging.add_log(0, "Slane package recived, not moving fast enough and not active_flight ---> %s" %package.orig_packet.encode('string-escape'))
             ret = True
     elif len(active_plane_falarms) > 0:
-        
-        ret = True
+        if fix_connected_plane(active_plane_falarms, package):
+            ret = True
+
     else:
-        logging.add_log(1, "something went wrong in processing package ---> %s " %package.orig_packet.encode('string-escape'))
+        logging.add_log(1, "Something went wrong in processing package ---> %s " %package.orig_packet.encode('string-escape'))
         ret = False
 
     return ret
 
-def no_connected_plane(package):
+def fix_connected_plane(active_plane_falarms, package, database_con):
+    package_flarm_id = helpers.get_flarm_id(package)
+    for e in active_plane_falarms:
 
-    return ""
+        if ( e[0] == None or e[1] == None ) and (e[2] < (dif_time + helpers.timestamp_to_seconds(package.timestamp)) and  (e[2] > dif_time - helpers.timestamp_to_seconds(package.timestamp))):
+
+            if  e[0] is not package_flarm_id and e[1] == None:
+                if not database.assign_tow_plane(database_con, e[0], package_flarm_id):
+                    logging.add_log(2, "Adding to database went wrong in fix_connected_plane --- kod 1")
+                    return -1
+            elif e[1] is not package_flarm_id and e[0] == None:
+                if not database.assign_glider(database_con, package_flarm_id, e[1]):
+                    logging.add_log(2, "Adding to database went wrong in fix_connected_plane --- kod 2")
+                    return -1
+            return True
+
+
+    return None
 
 def active_flight(packet, database_con):
+
     active_plane_falarms = database.get_started_flight(database_con)
+
     if active_plane_falarms is not -1:
-        if helpers.array_contains(active_plane_falarms, helpers.get_flarm_id(packet)):
+
+        active_flights = [e[0] for e in active_plane_falarms]
+        active_flights +=  [e[1] for e in active_plane_falarms]
+
+        if helpers.array_contains(active_flights, helpers.get_flarm_id(packet)):
             return active_plane_falarms
-        else:
-            return -1
+
+    return -1
