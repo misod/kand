@@ -152,26 +152,57 @@ Output:
 Summary:
 Adds a new flight to the database which is not finished.
 """
-def new_flight(connection, flight_number, flight_type, glider_id, towing_id):
+def new_flight(connection, glider_id, towing_id, time):
     val_return = 0
     try:
-        if towing_id is None:
-            with connection.cursor() as cursor:
-                sql = "INSERT INTO Flight_Data(Flight_No, Takeoff, Logged_Date, Flight_Type, Glider_id, Flight_Status) VALUES (%s, CURRENT_TIMESTAMP, CURRENT_DATE, %s, %s, 'Ongoing')"
-                cursor.execute(sql, (flight_number, flight_type, glider_id))
-                connection.commit()
-                val_return = 1
-        else:
-            with connection.cursor() as cursor:
-                sql = "INSERT INTO Flight_Data(Flight_No, Takeoff, Logged_Date, Flight_Type, Glider_id, Towing_id, Towing_Takeoff, Flight_Status) VALUES (%s, CURRENT_TIMESTAMP, CURRENT_DATE, %s, %s, %s, CURRENT_TIMESTAMP, 'Ongoing')"
-                cursor.execute(sql, (flight_number, flight_type, glider_id, towing_id))
-                connection.commit()
-                val_return = 1
+        with connection.cursor() as cursor:
+            sql = "INSERT INTO Flight_Data(Takeoff, Logged_Date, Glider_id, Towing_id, Flight_Status) VALUES (%s, CURRENT_DATE, %s, %s, 'Ongoing')"
+            cursor.execute(sql, (time, glider_id, towing_id))
+            connection.commit()
+            val_return = 1
     except Exception as e:
         print('Could not start a new flight')
         logging.add_log(2, 'Failed to start a new flight at database.new_flight() - %s' %e)
 
     return val_return
+
+def assign_glider(connection, glider_id, towing_id):
+    val_return = 0
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE Flight_Data SET Glider_id = %s where Towing_id = %s"
+            cursor.execute(sql, (glider_id, towing_id))
+            connection.commit()
+            val_return  = 1
+    except Exception as e:
+        print('Could not assign glider to flight')
+        logging.add_log(1, 'Failed to add a glider to a flight at database.assign_glider() - %s' %e)
+    return val_return
+
+def assign_tow_plane(connection, glider_id, towing_id):
+    val_return = 0
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE Flight_Data SET Towing_id = %s where Glider_id = %s"
+            cursor.execute(sql, (towing_id, glider_id))
+            connection.commit()
+            val_return  = 1
+    except Exception as e:
+        print('Could not assign tow plane to flight')
+        logging.add_log(1, 'Failed to add a tow plane to a flight at database.assign_tow_plane() - %s' %e)
+    return val_return
+
+def assign_flight_type(connection, glider_id, flight_type):
+    val_return = 0
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE Flight_Data SET Flight_Type = %s where Glider_id = %s"
+            cursor.execute(sql, (flight_type, glider_id))
+            val_return  = 1
+    except Exception as e:
+        print('Could not assign tow plane to flight')
+        logging.add_log(1, 'Failed to add a tow plane to a flight at database.assign_tow_plane() - %s' %e)
+
 
 
 """
