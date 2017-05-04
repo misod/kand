@@ -273,7 +273,7 @@ else:
 
 active_database_connection = database.login()
 
-if active_database_connection is None:
+if active_database_connection is -1:
     keep_running = False
 
 
