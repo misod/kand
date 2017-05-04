@@ -214,12 +214,12 @@ Output:
 Summary:
 Lands a towing plane and logs it
 """
-def tow_plane_landing(connection, flarm_id):
+def tow_plane_landing(connection, flarm_id, time):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Towing_Landing = CURRENT_TIMESTAMP WHERE Towing_id = %s AND Towing_Landing is NULL"
-            cursor.execute(sql, (flarm_id))
+            sql = "UPDATE Flight_Data SET Towing_Landing = %s WHERE Towing_id = %s AND Towing_Landing is NULL"
+            cursor.execute(sql, (time, flarm_id))
             connection.commit()
             val_return = 1
     except Exception as e:
