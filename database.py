@@ -23,13 +23,13 @@ def login():
                                      db="Kand") #The database name
                                      #charset='utf8') #Charset used for database
                                     # cursorclass=pymysql.cursors.DictCursor) #cursorclass used
+        return connection
 
     except pymysql.err.OperationalError as e:
         print('Could not connect to the database at login session')
         logging.add_log(2, 'Failed to connect to the database at database.login() - %s' %e)
+        return (-1)
 
-
-    return connection
 
 """
 Param:
@@ -61,6 +61,7 @@ Summary:
 Gets which gliders are registered in the database
 """
 def get_glider_ids(connection):
+    try:
         with connection.cursor() as cursor:
             # Read a single record
             sql = "SELECT Flarm_ID FROM Glider"
@@ -68,6 +69,10 @@ def get_glider_ids(connection):
             result = cursor.fetchall()
             array = list(itertools.chain.from_iterable(result))
             return array
+    except Exception as e:
+        print('Could not list all gliders')
+        logging.add_log(1, 'Failed to list all gliders registered in the database at database.get_glider_ids() - %s' %e)
+        return (-1)
 
 
 """
@@ -79,15 +84,17 @@ Summary:
 Gets which tow planes are registered in the database
 """
 def get_tow_plane_ids(connection):
-
-            with connection.cursor() as cursor:
-                # Read a single record
-                sql = "SELECT Flarm_ID FROM Tow_Plane"
-                cursor.execute(sql)
-                result = cursor.fetchall()
-                array = list(itertools.chain.from_iterable(result))
-                return array
-
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT Flarm_ID FROM Tow_Plane"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            array = list(itertools.chain.from_iterable(result))
+            return array
+    except Exception as e:
+        print('Could not list all tow planes')
+        logging.add_log(1, 'Failed to list all tow planes registered in the database at database.get_tow_plane_ids() - %s' %e)
+        return (-1)
 
 
 """
@@ -99,10 +106,16 @@ Summary:
 Gets which planes are registered in the database
 """
 def get_plane_ids(connection):
-    a1 = get_glider_ids(connection)
-    a2 = get_tow_plane_ids(connection)
-    array = a1+a2
-    return array
+    try:
+        a1 = get_glider_ids(connection)
+        a2 = get_tow_plane_ids(connection)
+        array = a1+a2
+        return array
+    except Exception as e:
+        print('Could not list all aircrafts')
+        logging.add_log(1, 'Failed to list all aircrafts registered in the database at database.get_plane_ids() - %s' %e)
+        return (-1)
+
 
 """
 Param:
@@ -113,12 +126,17 @@ Summary:
 Finds all ongoing flights in the database
 """
 def get_started_flight(connection):
-    with connection.cursor() as cursor:
-        sql = "SELECT Glider_id FROM Flight_Data WHERE Landing is NULL"
-        cursor.execute(sql)
-        result = cursor.fetchall()
-        array = list(itertools.chain.from_iterable(result))
-        return array
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT Glider_id FROM Flight_Data WHERE Landing is NULL"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+            array = list(itertools.chain.from_iterable(result))
+            return array
+    except Exception as e:
+        print('Could not list all ongoing flights')
+        logging.add_log(1, 'Failed to list all ongoing flights registered in the database at database.get_started_flight() - %s' %e)
+        return (-1)
 
 """
 Param:
@@ -302,11 +320,15 @@ Summary:
 Lists pilots
 """
 def list_pilot(connection):
-    with connection.cursor() as cursor:
-        sql = "SELECT * FROM Pilot"
-        cursor.execute(sql)
-        result = cursor.fetchall()
-    return result
+    try:
+        with connection.cursor() as cursor:
+            sql = "SELECT * FROM Pilot"
+            cursor.execute(sql)
+            result = cursor.fetchall()
+        return result
+    except Exception as e:
+        print('Could not list all pilots')
+        logging.add_log(1, 'Failed to list all pilots registered in the database at database.list_pilot() - %s' %e)
 
 """
 Param:
