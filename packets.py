@@ -51,11 +51,7 @@ def processing(glider_ids, towing_ids, package, database_con):
             # TODO register plane as landed and se if it was a legit Flight
             ret = True
         elif update_height_of_flight(active_plane_falarms, package, database_con):
-            # TODO register updated height for a flight
             ret = True
-        else:
-            logging.add_log(1, "somethin we didnt expect just happned ---> kod 4")
-            ret = False
 
     else:
         logging.add_log(1, "Something went wrong in processing package ---> %s " %package.orig_packet.encode('string-escape'))
@@ -67,12 +63,14 @@ def update_height_of_flight(active_plane_falarms, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
     for e in active_plane_falarms:
         if e[0] == package_flarm_id and e[3] < package.altitude:
-            #update height glider
+            if database.update_glider_height(database_con, package_flarm_id, package.altitude):
+                return False
+            return True
         elif e[1] == package_flarm_id and e[4] < package.altitude:
-            #update towing height
-    database.update_glider_height
-    database.update_towing_height
-    return ""
+            if not database.update_towing_height(database_con, package_flarm_id, package.altitude):
+                return False
+            return True
+    return False
 
 def plane_landed(package):
     if package.altitude < ( dif_hight + database.get_airfields_height()) and package.speed < threshold_landing_speed :

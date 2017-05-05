@@ -502,8 +502,8 @@ def update_glider_height(connection, flarm_id, height):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Max_Height = %s WHERE Glider_id = %s"
-            cursor.execute(sql, (height, flarm_id))
+            sql = "UPDATE Flight_Data SET Max_Height = %s WHERE Glider_id = %s AND Flight_Status = %s"
+            cursor.execute(sql, (height, flarm_id, "Ongoing"))
             connection.commit()
             val_return = 1
     except Exception as e:
@@ -515,8 +515,8 @@ def update_tow_height(connection, flarm_id, height):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Towing_Height = %s WHERE Towing_id = %s"
-            cursor.execute(sql, (height, flarm_id))
+            sql = "UPDATE Flight_Data SET Towing_Height = %s WHERE Towing_id = %s AND Towing_Landing = %s"
+            cursor.execute(sql, (height, flarm_id, None))
             connection.commit()
             val_return = 1
     except Exception as e:
