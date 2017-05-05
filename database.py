@@ -417,6 +417,44 @@ def assign_flight(connection, flight_number, pilot_id, flight_type):
         logging.add_log(2, 'Failed to add a pilot to a flight at database.assign_flight() - %s' %e)
     return val_return
 
+
+"""
+Param:
+connection - the active database connection
+fligt_number - number of the flight log to assign pilot to
+pilot_id - pilot to assign to the flight
+flight_type - which type of flight it was
+Output:
+0 if failed, 1 if successful
+Summary:
+Adds a flew instance to database for the flight log with given pilot
+"""
+def assign_tow_pilot(connection, flight_number, pilot_id):
+    val_return = 0
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE Flight_Data SET Towing_Pilot = %s WHERE Flight_No = %s"
+            cursor.execute(sql, (pilot_id, flight_number))
+            connection.commit()
+            val_return = 1
+    except Exception as e:
+        print('Could not assign tow pilot to flight')
+        logging.add_log(2, 'Failed to add a pilot to a flight at database.assign_tow_pilot() - %s' %e)
+    return val_return
+
+def assign_glider_pilot(connection, flight_number, pilot_id):
+    val_return = 0
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE Flight_Data SET Glider_Pilot = %s WHERE Flight_No = %s"
+            cursor.execute(sql, (pilot_id, flight_number))
+            connection.commit()
+            val_return = 1
+    except Exception as e:
+        print('Could not assign glider pilot to flight')
+        logging.add_log(2, 'Failed to add a pilot to a flight at database.assign_glider_flight() - %s' %e)
+    return val_return
+
 """
 Param:
 connection - the active database connection
@@ -498,31 +536,6 @@ def reset_surveillance(connection):
         logging.add_log(2, 'Failed to reset daily surveillances at database.reset_surveillance() - %s' %e)
     return val_return
 
-def update_glider_height(connection, flarm_id, height):
-    val_return = 0
-    try:
-        with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Max_Height = %s WHERE Glider_id = %s"
-            cursor.execute(sql, (height, flarm_id))
-            connection.commit()
-            val_return = 1
-    except Exception as e:
-        print('Could not update gliders max height')
-        logging.add_log(2, 'Failed to update gliders max height at database.update_glider_height() - %s' %e)
-    return val_return
-
-def update_tow_height(connection, flarm_id, height):
-    val_return = 0
-    try:
-        with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Towing_Height = %s WHERE Towing_id = %s"
-            cursor.execute(sql, (height, flarm_id))
-            connection.commit()
-            val_return = 1
-    except Exception as e:
-        print('Could not update towing height')
-        logging.add_log(2, 'Failed to update towing height at database.update_tow_height() - %s' %e)
-    return val_return
 
 def get_airfields_height():
     # the height above sealevel for parked planes
