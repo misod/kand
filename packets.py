@@ -6,7 +6,7 @@ import helpers
 threshold_speed = 30 # in km/h
 threshold_landing_speed = 10 # in mk/h
 dif_time = 90 # in sec
-dif_hight = 15 # in meters
+dif_height = 15 # in meters
 
 def relevant_package(array_whit_id, package):
     if package.src_callsign is not None and len(package.src_callsign) > 6:
@@ -73,7 +73,7 @@ def update_height_of_flight(active_plane_falarms, package, database_con):
     return False
 
 def plane_landed(package):
-    if package.altitude < ( dif_hight + database.get_airfields_height()) and package.speed < threshold_landing_speed :
+    if package.altitude < ( dif_height + database.get_airfields_height()) and package.speed < threshold_landing_speed :
         return True
     return False
 
