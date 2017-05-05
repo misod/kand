@@ -23,10 +23,6 @@ def relevant_package(array_whit_id, package):
 
 def processing(glider_ids, towing_ids, package, database_con):
 
-    #determin if plane is on ground
-    #se which is the towing plane
-    #log to database
-    #starting flight or landing?
     ret = False
     package_flarm_id = helpers.get_flarm_id(package)
     active_plane_flarms = active_flight(package, database_con)
