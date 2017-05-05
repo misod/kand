@@ -248,8 +248,8 @@ def tow_plane_landing(connection, flarm_id, time):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Towing_Landing = %s WHERE Towing_id = %s AND Towing_Landing is NULL"
-            cursor.execute(sql, (time, flarm_id))
+            sql = "UPDATE Flight_Data SET Towing_Landing = %s, Towing_Time = TIMEDIFF(%s, Takeoff) WHERE Towing_id = %s AND Towing_Landing is NULL"
+            cursor.execute(sql, (time, time, flarm_id))
             connection.commit()
             val_return = 1
     except Exception as e:
@@ -267,12 +267,12 @@ Output:
 Summary:
 Ends an ongoing flight when glider is landing
 """
-def end_flight(connection, flarm_id):
+def end_flight(connection, flarm_id, time):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql  = "UPDATE Flight_Data SET Landing = CURRENT_TIMESTAMP, Flight_Status = 'Finished' WHERE Glider_id = %s AND Flight_Status = 'Ongoing'"
-            cursor.execute(sql, (flarm_id))
+            sql  = "UPDATE Flight_Data SET Glider_Landing = %s, Flight_Status = 'Finished', Flight_Time = TIMEDIFF(%s, Takeoff) WHERE Glider_id = %s AND Flight_Status = 'Ongoing'"
+            cursor.execute(sql, (time, time, flarm_id))
             connection.commit()
             val_return = 1
     except Exception as e:
@@ -498,6 +498,31 @@ def reset_surveillance(connection):
         logging.add_log(2, 'Failed to reset daily surveillances at database.reset_surveillance() - %s' %e)
     return val_return
 
+def update_glider_height(connection, flarm_id, height):
+    val_return = 0
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE Flight_Data SET Max_Height = %s WHERE Glider_id = %s"
+            cursor.execute(sql, (height, flarm_id))
+            connection.commit()
+            val_return = 1
+    except Exception as e:
+        print('Could not update gliders max height')
+        logging.add_log(2, 'Failed to update gliders max height at database.update_glider_height() - %s' %e)
+    return val_return
+
+def update_tow_height(connection, flarm_id, height):
+    val_return = 0
+    try:
+        with connection.cursor() as cursor:
+            sql = "UPDATE Flight_Data SET Towing_Height = %s WHERE Towing_id = %s"
+            cursor.execute(sql, (height, flarm_id))
+            connection.commit()
+            val_return = 1
+    except Exception as e:
+        print('Could not update towing height')
+        logging.add_log(2, 'Failed to update towing height at database.update_tow_height() - %s' %e)
+    return val_return
 
 def get_airfields_height():
     # the height above sealevel for parked planes
