@@ -164,9 +164,18 @@ def new_flight(connection, glider_id, towing_id, time):
     except Exception as e:
         print('Could not start a new flight')
         logging.add_log(2, 'Failed to start a new flight at database.new_flight() - %s' %e)
-
     return val_return
 
+"""
+Param:
+connection - the active database connection
+glider_id - the ID of which glider to assign to flight
+towing_id - the ID of tow plane which is in flight
+Output:
+0 if failed, 1 if successful
+Summary:
+Adds a glider to an assisting flight log in the database.
+"""
 def assign_glider(connection, glider_id, towing_id):
     val_return = 0
     try:
@@ -180,6 +189,16 @@ def assign_glider(connection, glider_id, towing_id):
         logging.add_log(1, 'Failed to add a glider to a flight at database.assign_glider() - %s' %e)
     return val_return
 
+"""
+Param:
+connection - the active database connection
+glider_id - the ID of which glider is in flight
+towing_id - the ID of tow plane to assign to flight
+Output:
+0 if failed, 1 if successful
+Summary:
+Adds a glider to an assisting flight log in the database.
+"""
 def assign_tow_plane(connection, glider_id, towing_id):
     val_return = 0
     try:
@@ -193,12 +212,22 @@ def assign_tow_plane(connection, glider_id, towing_id):
         logging.add_log(1, 'Failed to add a tow plane to a flight at database.assign_tow_plane() - %s' %e)
     return val_return
 
-def assign_flight_type(connection, glider_id, flight_type):
+"""
+Param:
+connection - the active database connection
+flarm_id - the ID of which aircraft is used in the flight
+flight_type - flight type to be assigned to the flight
+Output:
+0 if failed, 1 if successful
+Summary:
+Adds a flight type to a flight log
+"""
+def assign_flight_type(connection, aircraft_id, flight_type):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Flight_Type = %s where Glider_id = %s"
-            cursor.execute(sql, (flight_type, glider_id))
+            sql = "UPDATE Flight_Data SET Flight_Type = %s where Glider_id = %s OR Towing_id = %s"
+            cursor.execute(sql, (flight_type, aircraft_id, aircraft_id))
             val_return  = 1
     except Exception as e:
         print('Could not assign tow plane to flight')
