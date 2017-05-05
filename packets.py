@@ -64,7 +64,14 @@ def processing(glider_ids, towing_ids, package, database_con):
     return ret
 
 def update_height_of_flight(active_plane_falarms, package, database_con):
-
+    package_flarm_id = helpers.get_flarm_id(package)
+    for e in active_plane_falarms:
+        if e[0] == package_flarm_id and e[3] < package.altitude:
+            #update height glider
+        elif e[1] == package_flarm_id and e[4] < package.altitude:
+            #update towing height
+    database.update_glider_height
+    database.update_towing_height
     return ""
 
 def plane_landed(package):
