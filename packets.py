@@ -3,8 +3,10 @@
 import logging
 import helpers
 
-threshold_speed = 30
-dif_time = 90
+threshold_speed = 30 # in km/h
+threshold_landing_speed = 10 # in mk/h
+dif_time = 90 # in sec
+dif_hight = 15 # in meters
 
 def relevant_package(array_whit_id, package):
     if package.src_callsign is not None and len(package.src_callsign) > 6:
@@ -45,6 +47,9 @@ def processing(glider_ids, towing_ids, package, database_con):
     elif len(active_plane_falarms) > 0:
         if fix_connected_plane(active_plane_falarms, package):
             ret = True
+        elif plane_landed(package):
+            # TODO register plane as landed and se if it was a legit Flight
+        elif update_height_of_flight():
         # TODO se vad andra åtgärder som ska göras
         # ska få in avslutning av flyg
         # och även om något towing flugit själv eller om ett plan har flytats och råkat registreras som flygning
@@ -54,13 +59,22 @@ def processing(glider_ids, towing_ids, package, database_con):
 
     return ret
 
+def update_height_of_flight():
+
+    return ""
+
+def plane_landed(package):
+    if package.altitude < ( dif_hight + database.get_airfields_height()) and package.speed < threshold_landing_speed :
+        return True
+    return False
+
 def fix_connected_plane(active_plane_falarms, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
     for e in active_plane_falarms:
 
         if ( e[0] == None or e[1] == None ) and (e[2] < (dif_time + helpers.timestamp_to_seconds(package.timestamp)) and  (e[2] > dif_time - helpers.timestamp_to_seconds(package.timestamp))):
 
-            if  e[0] is not package_flarm_id and e[1] == None:
+            if e[0] is not package_flarm_id and e[1] == None:
                 if not database.assign_tow_plane(database_con, e[0], package_flarm_id):
                     logging.add_log(2, "Adding to database went wrong in fix_connected_plane --- kod 1")
                     return -1
