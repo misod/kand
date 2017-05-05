@@ -49,17 +49,21 @@ def processing(glider_ids, towing_ids, package, database_con):
             ret = True
         elif plane_landed(package):
             # TODO register plane as landed and se if it was a legit Flight
-        elif update_height_of_flight():
-        # TODO se vad andra åtgärder som ska göras
-        # ska få in avslutning av flyg
-        # och även om något towing flugit själv eller om ett plan har flytats och råkat registreras som flygning
+            ret = True
+        elif update_height_of_flight(active_plane_falarms, package, database_con):
+            # TODO register updated height for a flight
+            ret = True
+        else:
+            logging.add_log(1, "somethin we didnt expect just happned ---> kod 4")
+            ret = False
+
     else:
         logging.add_log(1, "Something went wrong in processing package ---> %s " %package.orig_packet.encode('string-escape'))
         ret = False
 
     return ret
 
-def update_height_of_flight():
+def update_height_of_flight(active_plane_falarms, package, database_con):
 
     return ""
 
