@@ -1,43 +1,76 @@
 {% extends "personal/header.html" %}
 
-{% block content%}
+<!DOCTYPE HTML>
+{%block content%}
+<html lang="en-US">
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../static/personal/lib/jquery-2.1.0.min.js"></script>
+  <script src="../../static/personal/js/jquery.swipebox.js"></script>
+  <link rel="stylesheet" href="../../static/personal/css/homefix.css">
+
+
+
+
 <style>
-  .col-md-4{
-    background-color: gray;
+
+
+  .col-md-5{
     color: white;
     text-align: center;
     padding-right: ($spacer-x * .5) !important;
   }
-  .col-md-7{
-    background-color: black;
+  .col-md-5{
+    background-color:rgba(121, 120, 138, 0.4);
     color: white;
     text-align: center;
   }
 
+
 </style>
+</head>
 <body>
-<p>Hey, jag suger men jag testar iaf pung hora</p>
+
+
+
 <div class="container-fluid">
-  <div class="row">
-  <div class="col-md-4">
-
-
-      {% for post in object_list %}
-      <h5>{{post.date|date:"Y-m-d"}}<a href="/log/{{post.id}}"> {{post.title}}</a></h5>
-      {%endfor%}
-
-
-
-    hej hje </div>
-    <div class="col-md-1"></div>
-
-
-
-
-    <div class="col-md-7">bajs</div>
+  <div class="col-md-5"><h4>Digital Flylogs</h4>
+    <p>By using an already existing application called Open Glider Network,
+       digitized flight logs will be created. Open Glider Network's system
+       allows collection of data from airplanes that have FLARM installed. FLARM,
+        short for Flight Alarm, is a new safety precaution used to prevent collision
+         between aircraft. It also registers the aircrafts’ speed, altitude and position.
+          This project focuses on the use of collected data from the FLARM system to create
+          digitized flight logs.This will allow them to investigate if the system has the same
+           safety aspects as the analog system. The human error concerning the logs will also be minimized,
+            should this system be used.</p>
   </div>
 
+
+
+
+    <div class="col-md-2"></div>
+
+
+
+
+    <div class="col-md-5">
+      <div><h4> About Us</h4>
+      <p> We are four students that have worked on this site for our bachelor exam in Information Technology at Uppsala University.
+        The purpose of this website was to help a local glider club to streamline their organization and reduce the paperwork whit
+        flightlogs and make a backup if the human error would occur.</div>
+
+
+      <!--<img src="../../static/personal/img/glider.jpg" alt="..." class="img-thumbnail">-->
+
+
+
+    </div>
   </div>
+
+
+
+
 </body>
  <!-- <div class="row">
     <div class="col-xs-2"></div>
@@ -50,5 +83,4 @@
   </div>
 </div>-->
 
-{% include "personal/includes/htmlsnippet.html" %}
 {% endblock %}
