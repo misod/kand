@@ -11,7 +11,8 @@ def hex_string_to_int(str):
         return None
 
 def long_to_hex_str(l):
-    return hex(struct.unpack('<I', struct.pack('<l', l))[0])
+    ret = hex(struct.unpack('<I', struct.pack('<l', l))[0])
+    return ret[:2]+ret[2:].upper()
 
 def array_contains(array, element):
 

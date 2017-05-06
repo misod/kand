@@ -63,32 +63,32 @@ def update_landed_plane(active_plane_flarms, package, database_con):
 
     for e in active_plane_flarms:
         if e[0] == package_flarm_id:
-            return database.end_flight(database_con, package_flarm_id, package.timestamp)
+            return database.end_flight(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.raw_timestamp))
         if e[1] == package_flarm_id:
-            return database.tow_plane_landing(database_con, package_flarm_id, package.timestamp)
+            return database.tow_plane_landing(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.raw_timestamp))
     return False
 
 def update_height_of_flight(active_plane_flarms, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
     try:
         for e in active_plane_flarms:
-            if e[0] == package_flarm_id and e[3] < int(package.altitude.contents.value):
-
+            if e[0] is not None and e[0] == package_flarm_id and ( e[3] is None or e[3] < int(package.altitude.contents.value)):
                 if database.update_glider_height(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.altitude.contents.value)):
                     return False
                 return True
-            elif e[1] == package_flarm_id and e[4] < int(package.altitude.contents.value):
-                print packa
-                if not database.update_towing_height(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.altitude.contents.value)):
+            elif e[1] is not None and e[1] == package_flarm_id and (e[4] is None or e[4] < int(package.altitude.contents.value)):
+                if not database.update_tow_height(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.altitude.contents.value)):
                     return False
                 return True
+
     except Exception as e:
         logging.add_log(2, "Something went wrong when trying to update flight height ---> %s" %e)
+        print "Something went wrong when trying to update flight height ---> %s" %e
 
     return False
 
 def check_plane_landed(package):
-    if package.altitude < ( dif_height + database.get_airfields_height()) and package.speed < threshold_landing_speed :
+    if int(package.altitude.contents.value) < ( dif_height + database.get_airfields_height()) and int(package.speed.contents.value) <= threshold_landing_speed:
         return True
     return False
 
@@ -98,17 +98,17 @@ def fix_connected_plane(active_plane_flarms, package, database_con):
 
         if (e[0] is None or e[1] is None) and (e[2] <= (dif_time + helpers.raw_timestamp_to_seconds(package.raw_timestamp)) and (e[2] >= (-dif_time + helpers.raw_timestamp_to_seconds(package.raw_timestamp)))):
             if e[0] != package_flarm_id and e[1] is None:
-                if not database.assign_tow_plane(database_con, e[0], package_flarm_id):
+                if not database.assign_tow_plane(database_con, helpers.long_to_hex_str(e[0]), helpers.long_to_hex_str(package_flarm_id)):
                     logging.add_log(2, "Adding to database went wrong in fix_connected_plane --- kod 1")
                     return -1
                 return True
             elif e[1] != package_flarm_id and e[0] is None:
-                if not database.assign_glider(database_con, package_flarm_id, e[1]):
+                if not database.assign_glider(database_con, helpers.long_to_hex_str(package_flarm_id), helpers.long_to_hex_str(e[1])):
                     logging.add_log(2, "Adding to database went wrong in fix_connected_plane --- kod 2")
                     return -1
                 return True
 
-    return None
+    return -1
 
 def active_flight(packet, database_con):
 

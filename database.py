@@ -556,7 +556,7 @@ def update_tow_height(connection, flarm_id, height):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Towing_Height = %s WHERE Towing_id = %s AND Towing_Landing = %s"
+            sql = "UPDATE Flight_Data SET Towing_Height = %s WHERE Towing_id = %s AND Towing_Landing IS %s"
             cursor.execute(sql, (height, flarm_id, None))
             connection.commit()
             val_return = 1
