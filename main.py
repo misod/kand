@@ -18,6 +18,24 @@ server_address = "aprs.glidernet.org"
 server_port = 14580
 keep_running = True
 
+def main_func(glider_id_array, towingplane_id_array, active_database_connection, packet_str):
+
+    # Parse packet using libfap.py into fields to process, eg:
+    packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
+
+    if packets.relevant_package(plane_id_array, packet_parsed[0]):
+        if not logging.log_packet(packet_str):
+            logging.add_log(1, "Logging the flight packets went wrong, %s" % packet_str)
+
+        if not packets.processing(glider_id_array, towingplane_id_array, packet_parsed[0], active_database_connection):
+            logging.add_log(2, "Main -> processing packet went wrong")
+
+    if len(packet_str) == 0:
+        print "Read returns zero length string. Failure.  Orderly closeout"
+        return -2
+
+    return None
+
 
 try:
     # Try loading linux library
@@ -294,28 +312,16 @@ while keep_running: # loop untill we want to Exit
 
         packet_str = connection.get_message(active_socket_file)
 
-        # Parse packet using libfap.py into fields to process, eg:
-        packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
-
-        if packets.relevant_package(plane_id_array, packet_parsed[0]):
-            if not logging.log_packet(packet_str):
-                logging.add_log(1, "Logging the flight packets went wrong, %s" % packet_str)
-
-            if not packets.processing(glider_id_array, towingplane_id_array, packet_parsed[0], active_database_connection):
-                logging.add_log(2, "Main -> processing packet went wrong")
-    #    else:
-    #        print packet_parsed[0].src_callsign
-
-
-        if len(packet_str) == 0:
-            print "Read returns zero length string. Failure.  Orderly closeout"
+        if -2 is main_func(glider_id_array, towingplane_id_array, active_database_connection, packet_str):
             break
+
 
 
     except KeyboardInterrupt:
         logging.add_log(0, "KeyboardInterrupt detected -> Quiting")
         break
 # <----- while break ------>
+
 
 # Close libfap.py to avoid memory leak
 libfap.fap_cleanup()
