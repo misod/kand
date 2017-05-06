@@ -9,9 +9,11 @@
         <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
     </head>
     <body>
+<div class="container-fluid">
         <div><p><h5>Flight Logs</h5></p></div>
         {% render_table table1 %}
         <p><button type="button" class="btn btn-primary btn-lg">Download Excel</button></p>
+      </div>
     </body>
 </html>
 {% endblock %}
