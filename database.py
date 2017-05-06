@@ -70,7 +70,8 @@ def get_glider_ids(connection):
             cursor.execute(sql)
             result = cursor.fetchall()
             array = list(itertools.chain.from_iterable(result))
-            return array
+            ret_array =  [helpers.hex_string_to_int(e) for e in array]
+            return ret_array
     except Exception as e:
         print('Could not list all gliders')
         logging.add_log(1, 'Failed to list all gliders registered in the database at database.get_glider_ids() - %s' %e)
@@ -92,7 +93,8 @@ def get_tow_plane_ids(connection):
             cursor.execute(sql)
             result = cursor.fetchall()
             array = list(itertools.chain.from_iterable(result))
-            return array
+            ret_array =  [helpers.hex_string_to_int(e) for e in array]
+            return ret_array
     except Exception as e:
         print('Could not list all tow planes')
         logging.add_log(1, 'Failed to list all tow planes registered in the database at database.get_tow_plane_ids() - %s' %e)

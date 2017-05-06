@@ -1,6 +1,7 @@
 # helper functions that doesnt belong in any of the other files
 import logging
 import packets
+import struct
 
 def hex_string_to_int(str):
     try:
@@ -8,6 +9,9 @@ def hex_string_to_int(str):
         return val
     except Exception as e:
         return None
+
+def long_to_hex_str(l):
+    return hex(struct.unpack('<I', struct.pack('<l', l))[0])
 
 def array_contains(array, element):
 

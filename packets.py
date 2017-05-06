@@ -2,6 +2,8 @@
 
 import logging
 import helpers
+import database
+from ctypes import *
 
 threshold_speed = 30 # in km/h
 threshold_landing_speed = 10 # in mk/h
@@ -10,11 +12,9 @@ dif_height = 15 # in meters
 
 def relevant_package(array_whit_id, package):
     if package.src_callsign is not None and len(package.src_callsign) > 6:
-
         try:
             id_hex = helpers.get_flarm_id(package)
             if helpers.array_contains(array_whit_id, id_hex):
-
                 return True
 
 
@@ -43,7 +43,7 @@ def processing(glider_ids, towing_ids, package, database_con):
             logging.add_log(0, "Slane package recived, not moving fast enough and not active_flight ---> %s" %package.orig_packet.encode('string-escape'))
             ret = True
     elif len(active_plane_flarms) > 0:
-        if fix_connected_plane(active_plane_flarms, package):
+        if fix_connected_plane(active_plane_flarms, package, database_con):
             ret = True
         elif check_plane_landed(package):
             if not update_landed_plane(active_plane_flarms, package, database_con):
@@ -70,15 +70,20 @@ def update_landed_plane(active_plane_flarms, package, database_con):
 
 def update_height_of_flight(active_plane_flarms, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
-    for e in active_plane_flarms:
-        if e[0] == package_flarm_id and e[3] < package.altitude:
-            if database.update_glider_height(database_con, package_flarm_id, package.altitude):
-                return False
-            return True
-        elif e[1] == package_flarm_id and e[4] < package.altitude:
-            if not database.update_towing_height(database_con, package_flarm_id, package.altitude):
-                return False
-            return True
+    try:
+        for e in active_plane_flarms:
+            if e[0] == package_flarm_id and e[3] < package.altitude:
+
+                if database.update_glider_height(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.altitude.contents.value)):
+                    return False
+                return True
+            elif e[1] == package_flarm_id and e[4] < package.altitude:
+                if not database.update_towing_height(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.altitude.contents.value)):
+                    return False
+                return True
+    except Exception as e:
+        logging.add_log(2, "Something went wrong when trying to update flight height ---> %s" %e)
+
     return False
 
 def check_plane_landed(package):
