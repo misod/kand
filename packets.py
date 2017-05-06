@@ -11,7 +11,7 @@ dif_time = 90 # in sec
 dif_height = 15 # in meters
 
 def relevant_package(array_whit_id, package):
-    if package.src_callsign is not None and len(package.src_callsign) > 6:
+    if package.src_callsign != None and len(package.src_callsign) > 6:
         try:
             id_hex = helpers.get_flarm_id(package)
             if helpers.array_contains(array_whit_id, id_hex):
@@ -72,12 +72,13 @@ def update_height_of_flight(active_plane_flarms, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
     try:
         for e in active_plane_flarms:
-            if e[0] == package_flarm_id and e[3] < package.altitude:
+            if e[0] == package_flarm_id and e[3] < int(package.altitude.contents.value):
 
                 if database.update_glider_height(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.altitude.contents.value)):
                     return False
                 return True
-            elif e[1] == package_flarm_id and e[4] < package.altitude:
+            elif e[1] == package_flarm_id and e[4] < int(package.altitude.contents.value):
+                print packa
                 if not database.update_towing_height(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.altitude.contents.value)):
                     return False
                 return True
@@ -95,14 +96,13 @@ def fix_connected_plane(active_plane_flarms, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
     for e in active_plane_flarms:
 
-        if (e[0] is None or e[1] is None) and (e[2] <= (dif_time + helpers.raw_timestamp_to_seconds(package.raw_timestamp)) and (e[2] >= (dif_time - helpers.raw_timestamp_to_seconds(package.raw_timestamp)))):
-
-            if e[0] is not package_flarm_id and e[1] == None:
+        if (e[0] is None or e[1] is None) and (e[2] <= (dif_time + helpers.raw_timestamp_to_seconds(package.raw_timestamp)) and (e[2] >= (-dif_time + helpers.raw_timestamp_to_seconds(package.raw_timestamp)))):
+            if e[0] != package_flarm_id and e[1] is None:
                 if not database.assign_tow_plane(database_con, e[0], package_flarm_id):
                     logging.add_log(2, "Adding to database went wrong in fix_connected_plane --- kod 1")
                     return -1
                 return True
-            elif e[1] is not package_flarm_id and e[0] == None:
+            elif e[1] != package_flarm_id and e[0] is None:
                 if not database.assign_glider(database_con, package_flarm_id, e[1]):
                     logging.add_log(2, "Adding to database went wrong in fix_connected_plane --- kod 2")
                     return -1
@@ -113,7 +113,7 @@ def fix_connected_plane(active_plane_flarms, package, database_con):
 def active_flight(packet, database_con):
 
     active_plane_flarms = database.get_started_flight(database_con)
-    if active_plane_flarms is not -1:
+    if active_plane_flarms != -1:
 
         active_flights = [e[0] for e in active_plane_flarms]
         active_flights +=  [e[1] for e in active_plane_flarms]

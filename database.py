@@ -153,7 +153,7 @@ towing_id - the ID of any used towing plane if there is any used
 Output:
 0 if failed, 1 if successful
 Summary:
-Adds a new flight to the database which is not finished.
+Adds a new flight to the database which != finished.
 """
 def new_flight(connection, glider_id, towing_id, time):
     val_return = 0
