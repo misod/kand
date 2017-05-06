@@ -30,10 +30,13 @@ def get_element_index(array, element):
 
     return -1
 
-def timestamp_to_seconds(timestamp):
+def raw_timestamp_to_seconds(raw_timestamp):
     try:
-        i = int(timestamp[:5])
-        return i
+        sec = int(raw_timestamp[0:2])*3600
+        sec += int(raw_timestamp[2:4])*60
+        sec += int(raw_timestamp[4:6])
+
+        return sec
     except Exception as e:
         logging.add_log(1, "failed CONVERTING timestamp to int----> %s" %e)
         return None
