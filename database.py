@@ -70,7 +70,8 @@ def get_glider_ids(connection):
             cursor.execute(sql)
             result = cursor.fetchall()
             array = list(itertools.chain.from_iterable(result))
-            return array
+            ret_array =  [helpers.hex_string_to_int(e) for e in array]
+            return ret_array
     except Exception as e:
         print('Could not list all gliders')
         logging.add_log(1, 'Failed to list all gliders registered in the database at database.get_glider_ids() - %s' %e)
@@ -92,7 +93,8 @@ def get_tow_plane_ids(connection):
             cursor.execute(sql)
             result = cursor.fetchall()
             array = list(itertools.chain.from_iterable(result))
-            return array
+            ret_array =  [helpers.hex_string_to_int(e) for e in array]
+            return ret_array
     except Exception as e:
         print('Could not list all tow planes')
         logging.add_log(1, 'Failed to list all tow planes registered in the database at database.get_tow_plane_ids() - %s' %e)
@@ -151,7 +153,7 @@ towing_id - the ID of any used towing plane if there is any used
 Output:
 0 if failed, 1 if successful
 Summary:
-Adds a new flight to the database which is not finished.
+Adds a new flight to the database which != finished.
 """
 def new_flight(connection, glider_id, towing_id, time):
     val_return = 0
@@ -554,7 +556,7 @@ def update_tow_height(connection, flarm_id, height):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Towing_Height = %s WHERE Towing_id = %s AND Towing_Landing = %s"
+            sql = "UPDATE Flight_Data SET Towing_Height = %s WHERE Towing_id = %s AND Towing_Landing IS %s"
             cursor.execute(sql, (height, flarm_id, None))
             connection.commit()
             val_return = 1
