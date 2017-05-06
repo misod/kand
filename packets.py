@@ -6,7 +6,7 @@ import helpers
 threshold_speed = 30 # in km/h
 threshold_landing_speed = 10 # in mk/h
 dif_time = 90 # in sec
-dif_hight = 15 # in meters
+dif_height = 15 # in meters
 
 def relevant_package(array_whit_id, package):
     if package.src_callsign is not None and len(package.src_callsign) > 6:
@@ -23,14 +23,10 @@ def relevant_package(array_whit_id, package):
 
 def processing(glider_ids, towing_ids, package, database_con):
 
-    #determin if plane is on ground
-    #se which is the towing plane
-    #log to database
-    #starting flight or landing?
     ret = False
     package_flarm_id = helpers.get_flarm_id(package)
-    active_plane_falarms = active_flight(package, database_con)
-    if active_plane_falarms is -1:
+    active_plane_flarms = active_flight(package, database_con)
+    if active_plane_flarms is -1:
 
         if package.speed > threshold_speed:
             if helpers.array_contains(glider_ids, package_flarm_id):
@@ -44,37 +40,53 @@ def processing(glider_ids, towing_ids, package, database_con):
         else:
             logging.add_log(0, "Slane package recived, not moving fast enough and not active_flight ---> %s" %package.orig_packet.encode('string-escape'))
             ret = True
-    elif len(active_plane_falarms) > 0:
-        if fix_connected_plane(active_plane_falarms, package):
+    elif len(active_plane_flarms) > 0:
+        if fix_connected_plane(active_plane_flarms, package):
             ret = True
-        elif plane_landed(package):
-            # TODO register plane as landed and se if it was a legit Flight
+        elif check_plane_landed(package):
+            if not update_landed_plane(active_plane_flarms, package, database_con):
+                ret = False
             ret = True
-        elif update_height_of_flight(active_plane_falarms, package, database_con):
-            # TODO register updated height for a flight
+        elif update_height_of_flight(active_plane_flarms, package, database_con):
             ret = True
-        else:
-            logging.add_log(1, "somethin we didnt expect just happned ---> kod 4")
-            ret = False
-
+        ret = False
     else:
         logging.add_log(1, "Something went wrong in processing package ---> %s " %package.orig_packet.encode('string-escape'))
         ret = False
 
     return ret
 
-def update_height_of_flight(active_plane_falarms, package, database_con):
+def update_landed_plane(active_plane_flarms, package, database_con):
+    package_flarm_id = helpers.get_flarm_id(package)
 
-    return ""
+    for e in active_plane_flarms:
+        if e[0] == package_flarm_id:
+            return database.end_flight(database_con, package_flarm_id, package.timestamp)
+        if e[1] == package_flarm_id:
+            return database.tow_plane_landing(database_con, package_flarm_id, package.timestamp)
+    return False
 
-def plane_landed(package):
-    if package.altitude < ( dif_hight + database.get_airfields_height()) and package.speed < threshold_landing_speed :
+def update_height_of_flight(active_plane_flarms, package, database_con):
+    package_flarm_id = helpers.get_flarm_id(package)
+    for e in active_plane_flarms:
+        if e[0] == package_flarm_id and e[3] < package.altitude:
+            if database.update_glider_height(database_con, package_flarm_id, package.altitude):
+                return False
+            return True
+        elif e[1] == package_flarm_id and e[4] < package.altitude:
+            if not database.update_towing_height(database_con, package_flarm_id, package.altitude):
+                return False
+            return True
+    return False
+
+def check_plane_landed(package):
+    if package.altitude < ( dif_height + database.get_airfields_height()) and package.speed < threshold_landing_speed :
         return True
     return False
 
-def fix_connected_plane(active_plane_falarms, package, database_con):
+def fix_connected_plane(active_plane_flarms, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
-    for e in active_plane_falarms:
+    for e in active_plane_flarms:
 
         if ( e[0] == None or e[1] == None ) and (e[2] < (dif_time + helpers.timestamp_to_seconds(package.timestamp)) and  (e[2] > dif_time - helpers.timestamp_to_seconds(package.timestamp))):
 
@@ -93,14 +105,14 @@ def fix_connected_plane(active_plane_falarms, package, database_con):
 
 def active_flight(packet, database_con):
 
-    active_plane_falarms = database.get_started_flight(database_con)
+    active_plane_flarms = database.get_started_flight(database_con)
 
-    if active_plane_falarms is not -1:
+    if active_plane_flarms is not -1:
 
-        active_flights = [e[0] for e in active_plane_falarms]
-        active_flights +=  [e[1] for e in active_plane_falarms]
+        active_flights = [e[0] for e in active_plane_flarms]
+        active_flights +=  [e[1] for e in active_plane_flarms]
 
         if helpers.array_contains(active_flights, helpers.get_flarm_id(packet)):
-            return active_plane_falarms
+            return active_plane_flarms
 
     return -1
