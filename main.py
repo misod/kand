@@ -18,25 +18,6 @@ server_address = "aprs.glidernet.org"
 server_port = 14580
 keep_running = True
 
-def main_func(glider_id_array, towingplane_id_array, active_database_connection, packet_str):
-
-    # Parse packet using libfap.py into fields to process, eg:
-    packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
-
-    if packets.relevant_package(plane_id_array, packet_parsed[0]):
-        if not logging.log_packet(packet_str):
-            logging.add_log(1, "Logging the flight packets went wrong, %s" % packet_str)
-
-        if not packets.processing(glider_id_array, towingplane_id_array, packet_parsed[0], active_database_connection):
-            logging.add_log(2, "Main -> processing packet went wrong")
-
-    if len(packet_str) == 0:
-        print "Read returns zero length string. Failure.  Orderly closeout"
-        return -2
-
-    return None
-
-
 try:
     # Try loading linux library
 #    libfap = cdll.LoadLibrary('libfap.so')
@@ -254,14 +235,6 @@ class Login(object):
     latitude = 0
     radius = 0
 
-    """
-        def __init__(self, username, password, longitude, latitude, radius):
-        self.username = username
-        self.password = password
-        self.longitude = longitude
-        self.latitude = latitude
-        self.radius = radius
-    """
     #def __init__(self):
 
 # ----- main code ------
@@ -299,7 +272,6 @@ keepalive_time = time.time()
 current_time = time.time()
 glider_id_array = database.get_glider_ids(active_database_connection)
 towingplane_id_array = database.get_tow_plane_ids(active_database_connection)
-plane_id_array = glider_id_array + towingplane_id_array
 
 
 while keep_running: # loop untill we want to Exit
@@ -312,7 +284,7 @@ while keep_running: # loop untill we want to Exit
 
         packet_str = connection.get_message(active_socket_file)
 
-        if -2 is main_func(glider_id_array, towingplane_id_array, active_database_connection, packet_str):
+        if -2 is helpers.main_func(libfap, glider_id_array, towingplane_id_array, active_database_connection, packet_str):
             break
 
 

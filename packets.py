@@ -14,7 +14,9 @@ def relevant_package(array_whit_id, package):
         try:
             id_hex = helpers.get_flarm_id(package)
             if helpers.array_contains(array_whit_id, id_hex):
+
                 return True
+
 
         except Exception as e:
             logging.add_log(1, ("Galet->packets, funk relevant_package, %s ->>> %s" % (e, package[0].orig_packet)))

@@ -1,5 +1,6 @@
 # helper functions that doesnt belong in any of the other files
 import logging
+import packets
 
 def hex_string_to_int(str):
     try:
@@ -42,3 +43,21 @@ def get_flarm_id(packet):
         flarm_id = -1
 
     return flarm_id
+
+def main_func(libfap, glider_id_array, towingplane_id_array, active_database_connection, packet_str):
+
+    # Parse packet using libfap.py into fields to process, eg:
+    packet_parsed = libfap.fap_parseaprs(packet_str, len(packet_str), 0)
+
+    if packets.relevant_package(glider_id_array+towingplane_id_array, packet_parsed[0]):
+        if not logging.log_packet(packet_str):
+            logging.add_log(1, "Logging the flight packets went wrong, %s" % packet_str)
+
+        if not packets.processing(glider_id_array, towingplane_id_array, packet_parsed[0], active_database_connection):
+            logging.add_log(2, "Main -> processing packet went wrong")
+
+    if len(packet_str) == 0:
+        print "Read returns zero length string. Failure.  Orderly closeout"
+        return -2
+
+    return True
