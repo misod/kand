@@ -1,4 +1,6 @@
 import django_tables2 as tables
+from django_tables2_reports.tables import TableReport
+from django_tables2_reports.views import ReportTableView
 from .models import FlightData
 from .models import (Glider, TowPlane)
 
@@ -10,7 +12,7 @@ from .models import (Glider, TowPlane)
 #        # add class="paleblue" to <table> tag
 #        attrs = {'class': 'paleblue'}
 
-class LoggTable(tables.Table):
+class LoggTable(TableReport):
     glider = tables.Column(accessor = 'glider.glider_id')
     towing = tables.Column(accessor = 'towing.towing_id')
     glider_pilot = tables.Column(accessor = 'glider_pilot.pilot_id')

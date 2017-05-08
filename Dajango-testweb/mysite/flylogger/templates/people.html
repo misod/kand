@@ -1,5 +1,6 @@
 {% extends "personal/header.html" %}
 {% load render_table from django_tables2 %}
+
 {% load static %}
 {% block content%}
 <!doctype html>
@@ -12,7 +13,7 @@
 <div class="container-fluid">
         <div><p><h5>Flight Logs</h5></p></div>
         {% render_table table1 %}
-        <p><button type="button" class="btn btn-primary btn-lg">Download Excel</button></p>
+        <!--<p><button type="button" class="btn btn-primary btn-lg">Download Excel</button></p>-->
       </div>
     </body>
 </html>
