@@ -90,7 +90,7 @@ def update_height_of_flight(active_plane_flarms, package, database_con):
     return False
 
 def check_plane_landed(package):
-    if int(package.altitude.contents.value) < ( dif_height + database.get_airfields_height()) and int(package.speed.contents.value) <= threshold_landing_speed:
+    if int(package.altitude.contents.value) < (dif_height + database.get_airfields_height()) and int(package.speed.contents.value) <= threshold_landing_speed:
         return True
     return False
 
