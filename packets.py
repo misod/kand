@@ -121,8 +121,11 @@ def active_flight(packet, database_con):
     if active_plane_flarms != -1:
 
         active_flights = [e[0] for e in active_plane_flarms]
-        active_flights +=  [e[1] for e in active_plane_flarms]
+        for e in active_plane_flarms:
+            if e[5]:
+                active_flights += [e[1]]
 
         if helpers.array_contains(active_flights, helpers.get_flarm_id(packet)):
             return (1, active_plane_flarms)
+
     return (0, active_plane_flarms)
