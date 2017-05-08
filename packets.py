@@ -74,12 +74,12 @@ def update_height_of_flight(active_plane_flarms, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
     try:
         for e in active_plane_flarms:
-            if e[0] is not None and e[0] == package_flarm_id and ( e[3] is None or e[3] < int(package.altitude.contents.value)):
-                if database.update_glider_height(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.altitude.contents.value)):
+            if e[0] is not None and e[0] == package_flarm_id and ( e[3] is None or e[3] < helpers.get_value_converted_int(package.altitude)):
+                if database.update_glider_height(database_con, helpers.long_to_hex_str(package_flarm_id), helpers.get_value_converted_int(package.altitude)):
                     return False
                 return True
-            elif e[1] is not None and e[1] == package_flarm_id and (e[4] is None or e[4] < int(package.altitude.contents.value)):
-                if not database.update_tow_height(database_con, helpers.long_to_hex_str(package_flarm_id), int(package.altitude.contents.value)):
+            elif e[1] is not None and e[1] == package_flarm_id and (e[4] is None or e[4] < helpers.get_value_converted_int(package.altitude)):
+                if not database.update_tow_height(database_con, helpers.long_to_hex_str(package_flarm_id), helpers.get_value_converted_int(package.altitude)):
                     return False
                 return True
 
@@ -90,7 +90,7 @@ def update_height_of_flight(active_plane_flarms, package, database_con):
     return False
 
 def check_plane_landed(package):
-    if int(package.altitude.contents.value) < (dif_height + database.get_airfields_height()) and int(package.speed.contents.value) <= threshold_landing_speed:
+    if helpers.get_value_converted_int(package.altitude) < (dif_height + database.get_airfields_height()) and helpers.get_value_converted_int(package.speed) <= threshold_landing_speed:
         return True
     return False
 
@@ -108,7 +108,6 @@ def fix_connected_plane(active_plane_flarms, package, database_con):
                     logging.add_log(2, "Adding to database went wrong in fix_connected_plane --- kod 2")
                     return False
                 return True
-
     return False
 
 def active_flight(packet, database_con):

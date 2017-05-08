@@ -50,6 +50,8 @@ def get_flarm_id(packet):
         flarm_id = -1
 
     return flarm_id
+def get_value_converted_int(value):
+    return int(value.contents.value)
 
 def main_func(libfap, glider_id_array, towingplane_id_array, active_database_connection, packet_str):
 
