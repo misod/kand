@@ -132,8 +132,8 @@ Finds all ongoing flights in the database
 def get_started_flight(connection):
     try:
         with connection.cursor() as cursor:
-            sql = "SELECT Glider_id, Towing_id, Takeoff, Max_Height, Towing_Height FROM Flight_Data WHERE Glider_Landing is NULL"
-            cursor.execute(sql)
+            sql = "SELECT Glider_id, Towing_id, Takeoff, Max_Height, Towing_Height FROM Flight_Data WHERE Flight_Status = %s"
+            cursor.execute(sql, 'Ongoing')
             result = cursor.fetchall()
             array = list(result)
             new_array = [(helpers.hex_string_to_int(e[0]),helpers.hex_string_to_int(e[1]), e[2].total_seconds(), e[3], e[4]) for e in array]
@@ -259,6 +259,18 @@ def tow_plane_landing(connection, flarm_id, time):
         logging.add_log(2, 'Failed to land towing plane at database.tow_plane_landing() - %s' %e)
     return val_return
 
+def end_towplane_flight(connection, flarm_id):
+    val_return = 0
+    try:
+        with connection.cursor() as cursor:
+            sql  = "UPDATE Flight_Data SET Flight_Status = 'Finished' WHERE Towing_id = %s AND Flight_Status = 'Ongoing' AND Glider_id is Null"
+            cursor.execute(sql, flarm_id)
+            connection.commit()
+            val_return = 1
+    except Exception as e:
+        print('Could not end flight')
+        logging.add_log(2, 'Failed to end flight at database.end_towplane_flight() - %s' %e)
+    return val_return
 
 """
 Param:
