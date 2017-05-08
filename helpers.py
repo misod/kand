@@ -68,6 +68,7 @@ def main_func(libfap, glider_id_array, towingplane_id_array, active_database_con
 
         if not packets.processing(glider_id_array, towingplane_id_array, packet_parsed[0], active_database_connection):
             logging.add_log(2, "Main -> processing packet went wrong")
+            return False
 
     if len(packet_str) == 0:
         print "Read returns zero length string. Failure.  Orderly closeout"
