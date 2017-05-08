@@ -238,7 +238,7 @@ DBCon = database.login()
 
 glider_id_array = database.get_glider_ids(DBCon)
 towingplane_id_array = database.get_tow_plane_ids(DBCon)
-v = helpers.main_func(libfap, glider_id_array, towingplane_id_array, DBCon,"FLRAAABBC>APRS,qAS,LSTB:/104555h4658.70N/00707.72Ez090/002/A=000003 !W37! id06AAABBC +020fpm +0.0rot 55.2dB 0e -6.2kHz gps4x6 s6.01 h03 rDDACC4 +5.0dBm hearD7EA hearDA95")
+v = helpers.main_func(libfap, glider_id_array, towingplane_id_array, DBCon,"FLRBBBBBB>APRS,qAS,LSTB:/114900h4658.70N/00707.72Ez090/018/A=000002 !W37! id06BBBBBB +020fpm +0.0rot 55.2dB 0e -6.2kHz gps4x6 s6.01 h03 rDDACC4 +5.0dBm hearD7EA hearDA95")
 print v
 
 #print("Gliders registered:")

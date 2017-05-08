@@ -48,8 +48,14 @@ def get_flarm_id(packet):
     except Exception as e:
         logging.add_log(1, "failed to get flarm id ----> %s" %e)
         flarm_id = -1
-
     return flarm_id
+
+def get_value_converted_int(value):
+    try:
+        return int(value.contents.value)
+    except Exception as e:
+        logging.add_log(1, "failed CONVERTING value to int----> %s" %e)
+        return None
 
 def main_func(libfap, glider_id_array, towingplane_id_array, active_database_connection, packet_str):
 
