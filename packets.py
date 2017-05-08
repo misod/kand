@@ -33,7 +33,7 @@ def processing(glider_ids, towing_ids, package, database_con):
         if fix_connected_plane(active_plane_flarms[1], package, database_con):
             ret = True
             logging.add_log(0, "Plane connected to another flight")
-        elif package.speed > threshold_speed:
+        elif  helpers.get_value_converted_int(package.speed) > threshold_speed:
             if helpers.array_contains(glider_ids, package_flarm_id):
                 if not database.new_flight(database_con, helpers.long_to_hex_str(package_flarm_id), None, int(package.raw_timestamp)):
                     logging.add_log(2, "Failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
@@ -47,7 +47,7 @@ def processing(glider_ids, towing_ids, package, database_con):
             ret = True
     elif len(active_plane_flarms[1]) > 0:
 
-        if check_plane_landed(package):
+        if check_plane_landed(active_plane_flarms[1], package):
             if not update_landed_plane(active_plane_flarms[1], package, database_con):
                 ret = False
             ret = True
@@ -89,9 +89,13 @@ def update_height_of_flight(active_plane_flarms, package, database_con):
 
     return False
 
-def check_plane_landed(package):
-    if helpers.get_value_converted_int(package.altitude) < (dif_height + database.get_airfields_height()) and helpers.get_value_converted_int(package.speed) <= threshold_landing_speed:
-        return True
+def check_plane_landed(active_plane_flarms, package):
+    package_flarm_id = helpers.get_flarm_id(package)
+    for e in active_plane_flarms:
+        if (e[0] is not None and e[0] == package_flarm_id) or (e[1] is not None and e[1] == package_flarm_id):
+            if helpers.get_value_converted_int(package.altitude) < (dif_height + database.get_airfields_height()) and helpers.get_value_converted_int(package.speed) <= threshold_landing_speed and e[2]+dif_time < helpers.raw_timestamp_to_seconds(package.raw_timestamp):
+                return True
+
     return False
 
 def fix_connected_plane(active_plane_flarms, package, database_con):
