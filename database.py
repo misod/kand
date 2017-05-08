@@ -570,4 +570,4 @@ def get_airfields_height():
     # mabye set this as a variable that the users define when setting up the system
     # or let the program determine this and see how it behaves
 
-    return 100
+    return 10
