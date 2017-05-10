@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 from fields import Fields
 from django.contrib import admin
 from import_export import resources
-from flylogger.models import FlightData, Glider, TowPlane
+from flylogger.models import FlightData, Glider, TowPlane, Pilot
 from flylogger.tables import LoggTable
 from import_export import fields
 from import_export.admin import ImportExportModelAdmin
@@ -39,5 +39,8 @@ class FlightDataAdmin(ImportExportModelAdmin):
 
 
 admin.site.register(FlightData, FlightDataAdmin)
+admin.site.register(Glider)
+admin.site.register(TowPlane)
+admin.site.register(Pilot)
 
 # Register your models here.

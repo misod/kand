@@ -42,6 +42,11 @@ class FlightData(models.Model):
     notes = models.CharField(db_column='Notes', max_length=150, blank=True, null=True)  # Field name made lowercase.
     max_height = models.IntegerField(db_column='Max_Height', blank=True, null=True)  # Field name made lowercase.
 
+
+    def __str__(self):
+        return 'FligtLog Number: ' + str(self.flight_no)
+
+
     class Meta:
         managed = False
         db_table = 'Flight_Data'
@@ -53,6 +58,9 @@ class Glider(models.Model):
     flarm_id = models.CharField(db_column='Flarm_ID', primary_key=True, max_length=12)  # Field name made lowercase.
     daily_surveillance_performed = models.CharField(db_column='Daily_Surveillance_Performed', max_length=150, blank=True, null=True)  # Field name made lowercase.
 
+    def __str__(self):
+        return 'Glider: ' + self.glider_id
+
     class Meta:
         managed = False
         db_table = 'Glider'
@@ -61,6 +69,9 @@ class Glider(models.Model):
 class Pilot(models.Model):
     pilot_id = models.IntegerField(db_column='Pilot_ID', primary_key=True)  # Field name made lowercase.
     name = models.CharField(db_column='Name', max_length=150, blank=True, null=True)  # Field name made lowercase.
+
+    def __str__(self):
+        return 'Member: ' + str(self.pilot_id) + ' Name: ' + self.name
 
     class Meta:
         managed = False
@@ -82,6 +93,9 @@ class TowPlane(models.Model):
     towing_id = models.CharField(db_column='Towing_ID',unique=True, max_length=12)  # Field name made lowercase.
     flarm_id = models.CharField(db_column='Flarm_ID', primary_key=True, max_length=12)  # Field name made lowercase.
     daily_surveillance_performed = models.CharField(db_column='Daily_Surveillance_Performed', max_length=150, blank=True, null=True)  # Field name made lowercase.
+
+    def __str__(self):
+        return 'TowPlane: ' + self.towing_id
 
     class Meta:
         managed = False

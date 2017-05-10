@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
+
 ]
 
 
@@ -138,7 +138,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-TIME_INPUT_FORMATS = ('%H:%M',)
+TimeField = ['%H:%M']
+DateTimeField = ['%Y-%m-%d %H:%M:%S',]
+SHORT_DATETIME_FORMAT =['%Y-%m-%d %H:%M:%S',] 
 
 
 

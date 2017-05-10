@@ -17,6 +17,7 @@ class LoggTable(TableReport):
     towing = tables.Column(accessor = 'towing.towing_id')
     glider_pilot = tables.Column(accessor = 'glider_pilot.pilot_id')
     towing_pilot = tables.Column(accessor = 'towing_pilot.pilot_id')
+
     #def render_glider(self,record):
     #    if record.glider.exists():
     #            return str([p.pk for p in record.glider.all()])
