@@ -205,7 +205,7 @@ def assign_tow_plane(connection, glider_id, towing_id):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Towing_id = %s where Glider_id = %s AND Flight_Status = %s AND Glider_id is NUll"
+            sql = "UPDATE Flight_Data SET Towing_id = %s where Glider_id = %s AND Flight_Status = %s AND Towing_id is NUll"
             cursor.execute(sql, (towing_id, glider_id, 'Ongoing'))
             connection.commit()
             val_return  = 1

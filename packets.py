@@ -77,7 +77,7 @@ def update_height_of_flight(active_plane_flarms, package, database_con):
     try:
         for e in active_plane_flarms:
             if e[0] is not None and e[0] == package_flarm_id and ( e[3] is None or e[3] < helpers.get_value_converted_int(package.altitude)):
-                if database.update_glider_height(database_con, helpers.long_to_hex_str(package_flarm_id), helpers.get_value_converted_int(package.altitude)):
+                if not database.update_glider_height(database_con, helpers.long_to_hex_str(package_flarm_id), helpers.get_value_converted_int(package.altitude)):
                     return False
                 return True
             elif e[1] is not None and e[1] == package_flarm_id and (e[4] is None or e[4] < helpers.get_value_converted_int(package.altitude)):
