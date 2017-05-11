@@ -9,6 +9,7 @@ urlpatterns = [
     #url(r'^webapp/', include('webapp.urls')),
     url(r'^contact', views.contact, name = 'contact'),
     url(r'^information', views.information, name = 'information'),
+    url(r'^signup', views.signup, name = 'signup'),
     #url(r'^$', flylogger.views.flylogger, template_name = "flylogger/flylogger.html"),
     #url(r'^$', ListView.as_view(queryset=Post.objects.all().order_by("-date")[:25],
                                 #                template_name="log/log.html")),

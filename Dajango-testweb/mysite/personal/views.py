@@ -11,4 +11,8 @@ def information(request):
 
 def flylogs(request):
     return render(request, 'personal/basic.html',{'content' :['This site is under development but this will be the main button for logs']})
+
+
+def signup(request):
+    return render(request, 'personal/basic.html',{'content' :['If you would like to sign up and be abel to download the tabel in xlsx or csv, email to conrad.aslund@gmail.com']})
 # Create your views here.

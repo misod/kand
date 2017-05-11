@@ -6,8 +6,8 @@ from .models import (FlightData, Glider, TowPlane)
 from .tables import (LoggTable, GliderTable)
 
 def people(request):
-    table1 = LoggTable(FlightData.objects.all().select_related('glider'))
-    RequestConfig(request).configure(table1)
+    table1 = LoggTable(FlightData.objects.all().select_related('glider'), order_by="-logged_date")
+    RequestConfig(request, paginate={'per_page': 20}).configure(table1)
     return render(request, 'people.html', {'table1': table1}, )
 
 

@@ -15,8 +15,8 @@ from .models import (Glider, TowPlane)
 class LoggTable(TableReport):
     glider = tables.Column(accessor = 'glider.glider_id')
     towing = tables.Column(accessor = 'towing.towing_id')
-    glider_pilot = tables.Column(accessor = 'glider_pilot.pilot_id')
-    towing_pilot = tables.Column(accessor = 'towing_pilot.pilot_id')
+    glider_pilot = tables.Column(verbose_name ='Glider Pilot', accessor = 'glider_pilot.name')
+    towing_pilot = tables.Column(verbose_name ='Towing Pilot',accessor = 'towing_pilot.name')
 
     #def render_glider(self,record):
     #    if record.glider.exists():
@@ -24,7 +24,7 @@ class LoggTable(TableReport):
     class Meta :
         model = FlightData
         #model = Glider
-        exclude = ('max_height')
+        #exclude = ('max_height')
         attrs = {'class': 'paleblue'}
 
 class GliderTable(tables.Table):
