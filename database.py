@@ -182,8 +182,8 @@ def assign_glider(connection, glider_id, towing_id):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Glider_id = %s where Towing_id = %s"
-            cursor.execute(sql, (glider_id, towing_id))
+            sql = "UPDATE Flight_Data SET Glider_id = %s where Towing_id = %s AND Flight_Status = %s AND Glider_id is Null"
+            cursor.execute(sql, (glider_id, towing_id, 'Ongoing'))
             connection.commit()
             val_return  = 1
     except Exception as e:
@@ -205,8 +205,8 @@ def assign_tow_plane(connection, glider_id, towing_id):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Towing_id = %s where Glider_id = %s"
-            cursor.execute(sql, (towing_id, glider_id))
+            sql = "UPDATE Flight_Data SET Towing_id = %s where Glider_id = %s AND Flight_Status = %s AND Towing_id is NUll"
+            cursor.execute(sql, (towing_id, glider_id, 'Ongoing'))
             connection.commit()
             val_return  = 1
     except Exception as e:
@@ -228,7 +228,7 @@ def assign_flight_type(connection, aircraft_id, flight_type):
     val_return = 0
     try:
         with connection.cursor() as cursor:
-            sql = "UPDATE Flight_Data SET Flight_Type = %s where Glider_id = %s OR Towing_id = %s"
+            sql = "UPDATE Flight_Data SET Flight_Type = %s where Glider_id = %s OR Towing_id = %s" #TODO update so the specific flight gets affected
             cursor.execute(sql, (flight_type, aircraft_id, aircraft_id))
             val_return  = 1
     except Exception as e:
