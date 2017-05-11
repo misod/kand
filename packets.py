@@ -36,11 +36,13 @@ def processing(glider_ids, towing_ids, package, database_con):
             if helpers.array_contains(glider_ids, package_flarm_id):
                 if not database.new_flight(database_con, helpers.long_to_hex_str(package_flarm_id), None, int(package.raw_timestamp)):
                     logging.add_log(2, "Failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
-                ret = True
+                else:
+                    ret = True
             elif helpers.array_contains(towing_ids, package_flarm_id):
                 if not database.new_flight(database_con, None, helpers.long_to_hex_str(package_flarm_id), int(package.raw_timestamp)):
                     logging.add_log(2, "Failed to start a new fligt for glider -> %s" %package.orig_packet.encode('string-escape'))
-                ret = True
+                else:
+                    ret = True
         else:
             logging.add_log(0, "Plane package recived, not moving fast enough and not active_flight ---> %s" %package.orig_packet.encode('string-escape'))
             ret = True
@@ -55,7 +57,6 @@ def processing(glider_ids, towing_ids, package, database_con):
             ret = True
     else:
         logging.add_log(1, "Something went wrong in processing package ---> %s " %package.orig_packet.encode('string-escape'))
-        ret = False
 
     return ret
 
