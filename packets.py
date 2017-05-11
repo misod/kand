@@ -29,7 +29,6 @@ def processing(glider_ids, towing_ids, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
     active_plane_flarms = active_flight(package, database_con)
     if not active_plane_flarms[0]:
-
         if fix_connected_plane(active_plane_flarms[1], package, database_con):
             ret = True
             logging.add_log(0, "Plane connected to another flight")
@@ -48,11 +47,12 @@ def processing(glider_ids, towing_ids, package, database_con):
     elif len(active_plane_flarms[1]) > 0:
         if check_plane_landed(active_plane_flarms[1], package):
             if not update_landed_plane(active_plane_flarms[1], package, database_con):
+                logging.add_log(1, "problem regestring plane landing ----> kod 32")
                 ret = False
-            ret = True
+            else:
+                ret = True
         elif update_height_of_flight(active_plane_flarms[1], package, database_con):
             ret = True
-        ret = False
     else:
         logging.add_log(1, "Something went wrong in processing package ---> %s " %package.orig_packet.encode('string-escape'))
         ret = False
