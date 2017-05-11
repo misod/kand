@@ -4,11 +4,20 @@ from django.shortcuts import render
 from django_tables2 import RequestConfig
 from .models import (FlightData, Glider, TowPlane)
 from .tables import (LoggTable, GliderTable)
+from .admin import FlightDataResource
 
 def people(request):
     table1 = LoggTable(FlightData.objects.all().select_related('glider'), order_by="-logged_date")
     RequestConfig(request, paginate={'per_page': 20}).configure(table1)
     return render(request, 'people.html', {'table1': table1}, )
+
+
+def export(request):
+    flight_resource = FlightDataResource()
+    dataset = flight_resource.export()
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="flylog.xls"'
+    return response
 
 
 
