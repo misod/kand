@@ -89,8 +89,10 @@ def update_height_of_flight(active_plane_flarms, package, database_con):
     except Exception as e:
         logging.add_log(2, "Something went wrong when trying to update flight height ---> %s" %e)
         print "Something went wrong when trying to update flight height ---> %s" %e
+        return False
 
-    return False
+    logging.add_log(0, "plane height not updated")
+    return True
 
 def check_plane_landed(active_plane_flarms, package):
     package_flarm_id = helpers.get_flarm_id(package)
