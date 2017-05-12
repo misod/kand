@@ -9,7 +9,8 @@ from import_export.admin import ImportExportModelAdmin
 from import_export.admin import ImportExportMixin, ImportMixin, ExportActionModelAdmin, ExportMixin
 from import_export.resources import ModelResource
 from import_export.widgets import ForeignKeyWidget
-
+import datetime
+from .tables import (LoggTable, GliderTable)
 
 
 
@@ -25,6 +26,9 @@ class FlightDataResource(resources.ModelResource):
     column_name = 'towing',
     attribute = 'towing',
     widget =ForeignKeyWidget('TowPlane', 'towing_id'))
+
+
+
 
     class Meta:
         model = FlightData

@@ -8,15 +8,22 @@ from .admin import FlightDataResource
 import datetime
 
 def people(request):
-    today = datetime.datetime.today()
-    table1 = LoggTable(FlightData.objects.filter(logged_date = today ).select_related('glider'), order_by="-logged_date")
-    RequestConfig(request, paginate={'per_page': 20}).configure(table1)
+    if request.GET.get('date', ''):
+        table1 = LoggTable(FlightData.objects.filter(logged_date = request.GET.get('date', '') ).select_related('glider'), order_by="-logged_date")
+        RequestConfig(request, paginate={'per_page': 20}).configure(table1)
+
+    else:
+            today = datetime.datetime.today()
+            table1 = LoggTable(FlightData.objects.filter(logged_date = today ).select_related('glider'), order_by="-logged_date")
+            RequestConfig(request, paginate={'per_page': 20}).configure(table1)
     return render(request, 'people.html', {'table1': table1}, )
 
 
 def export(request):
+    today = datetime.datetime.today()
+    queryset = FlightData.objects.filter(logged_date = request.GET.get('date', ''))
     flight_resource = FlightDataResource()
-    dataset = flight_resource.export()
+    dataset = flight_resource.export(queryset)
     response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
     response['Content-Disposition'] = 'attachment; filename="flylog.xls"'
     return response

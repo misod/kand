@@ -13,13 +13,18 @@
 <div class="container-fluid">
 
 
-        <div><p><h5>Flight Logs</h5></p></div>
+        <div><p><h4>Todays Flight Logs</h4></p></div>
+        <form action="/flylogger/newlog/">
+        <h5>Show log by date:</h5>
+          <input type="date" name="date">
+          <input type="submit">
+        </form>
         {% render_table  table1 %}
 
-        <a type="button" href= "/flylogger/export/" class="btn btn-primary btn-lg">Download Excel</a>
+        <!--<a type="button" href= "/flylogger/export/" class="btn btn-primary btn-lg">Download Excel</a>-->
 
-        <form action="#">
-          Date for log:
+        <form action="/flylogger/export/">
+        <h4>Download Flylog(Excel):</h4>
           <input type="date" name="date">
           <input type="submit">
         </form>

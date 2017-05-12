@@ -14,5 +14,5 @@ def flylogs(request):
 
 
 def signup(request):
-    return render(request, 'personal/basic.html',{'content' :['If you would like to sign up and be abel to download the tabel in xlsx or csv, email to conrad.aslund@gmail.com']})
+    return render(request, 'personal/basic.html',{'content' :['If you would like to sign up and be able to register your glider, send email to conrad.aslund@gmail.com with glider name and FLARM id']})
 # Create your views here.
