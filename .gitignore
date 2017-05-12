@@ -1,0 +1,13 @@
+# gitignore
+
+#dir ------------------
+
+slabb/
+logFiles/packetLog.txt
+logFiles/
+
+#files -----------------
+
+.DS_Store
+login.txt
+*.pyc
