@@ -1,0 +1,31 @@
+{% extends "personal/header.html" %}
+
+{% block content%}
+<head>
+  <link rel="stylesheet" href="../static/log/css/homefixlog.css">
+
+</head>
+
+<style>
+
+
+
+.col-md-7{
+  background-color:rgba(255, 255, 255, 0.6);
+  color: black;
+  text-align: left;
+}
+
+</style>
+<body>
+
+<div class="container-fluid">
+<div class="col-md-7">
+  <h3>{{post.title}}</h3>
+  <h6>on {{post.date}}</h6>
+  {{post.body|safe|linebreaks}}
+</div>
+</div>
+</body>
+
+{% endblock %}

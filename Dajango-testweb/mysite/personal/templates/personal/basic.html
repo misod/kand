@@ -1,0 +1,25 @@
+{% extends "personal/header.html" %}
+
+
+{% block content%}
+<style>
+.col-md-5{
+  background-color:rgba(255, 255, 255, 0.8);
+  color: black;
+  text-align: center;
+
+}
+
+</style>
+
+
+
+<link rel="stylesheet" href="../../static/personal/css/homefixbasic.css">
+<div class="container-fluid">
+  <div class="col-md-5">
+  {% for c in content %}
+    <p>{{c}}</p>
+  {% endfor %}
+</div>
+</div>
+{% endblock %}

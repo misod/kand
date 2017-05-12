@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Test Av Logsystem</title>
+	<meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="viewport" content = "width=device-width, initial-scale=1.0">
+	{% load staticfiles %}
+	<link rel="stylesheet" href="{% static 'personal/css/bootstrap.min.css' %}" type = "text/css"/>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+	<style type="text/css">
+		html,
+		body {
+		  height:100%
+		}
+
+		@media screen and (max-width: 767px) {
+		 .sidenav {
+			 height: auto;
+			 padding: 15px;
+		 }
+		 .row.content {height:auto;}
+	 }
+
+	 .jumbotron {
+		 padding-top: 40px;
+		 padding-bottom: 20px;
+		 margin-bottom: 20px;
+		 background: gray;
+	 }
+		.col-xs-6{
+			height: 300px;
+			background-color: gray;
+			color: white;
+			text-align: center;
+		}
+
+		</style>
+
+</head>
+
+<body class="body" style="background-color:#f6f6f6">
+	<div class="container-fluid" style="min-height:95%; ">
+		<!--<div class="row">
+			  <div class="col-sm-2">
+				  <br>
+				  <center>
+					<img src="{% static 'personal/img/profile.jpg' %}" class="responsive-img" style='max-height:100px;' alt="face">
+				  </center>
+			  </div>
+			  <div class="col-sm-10">
+				  <br>
+				  <center>
+				  <h3>Programming, Teaching, Entrepreneurship</h3>
+				  </center>
+			  </div>
+		</div><hr>-->
+		<nav class="navbar navbar-inverse">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		        <span class="icon-bar"></span>
+		      </button>
+		      <a class="navbar-brand" href="/flylogger/">FLYLOGS</a>
+		    </div>
+		    <div class="collapse navbar-collapse" id="myNavbar">
+		      <ul class="nav navbar-nav">
+		        <li><a href="/">Home</a></li>
+						<li><a href="/flylogger/">Flylogs</a></li>
+		        <li><a href="/information/">Information</a></li>
+		        <li><a href="http://rasp.skyltdirect.se/scandinavia/?conf=semidsouth&wind=sw" target="_blank">Rasp</a></li>
+		        <li><a href="http://ognrange.onglide.com/#ESVL,max,all,59.7455_17.1438,9,#00990000:#009900ff," target="_blank">Receivers</a></li>
+						<li><a href="http://glidertracker.de/#lat=59.799&lon=17.136&z=10&id=" target="_blank">Flight Map</a></li>
+						<li><a href="http://live.glidernet.org/#c=59.74817,17.24503&z=10" target="_blank">Live Tracker</a></li>
+		      </ul>
+		      <ul class="nav navbar-nav navbar-right">
+						<li><a href="/signup/"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+		        <li><a href="/contact/"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+		      </ul>
+		    </div>
+		  </div>
+		</nav>
+
+
+<!--
+		<nav class="navbar navbar-inverse">
+			<div class="container-fluid">
+    	<div class="navbar-header">
+			<button type="button" class="btn btn-default btn-lg">
+  		<span class="glyphicon glyphicon-home" aria-hidden="true"></span> Home
+		</button>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href='/'>Home</a></li>
+				<li><a href="#">Information</a></li>
+				<li><a href="http://rasp.skyltdirect.se/scandinavia/?conf=semidsouth&wind=sw">Rasp</a></li>
+				<li><a href="http://wiki.glidernet.org/list-of-receivers">Resivers</a></li>
+				<li><a href="http://live.glidernet.org/#c=59.87751,16.94739&z=11">Live Tracker</a></li>
+			</ul>
+		</div>
+
+		</nav>
+-->
+
+
+		<div class="row">
+		  <div class="col-sm-2">
+		  <br>
+
+		  <br>
+		   <!-- Great, til you resize. -->
+			<!--<div class="well bs-sidebar affix" id="sidebar" style="background-color:#fff">-->
+			<div class="well bs-sidebar" id="sidebar" style="background-color:#fff">
+			  <ul class="nav nav-pills nav-stacked">
+				<li><a href='/'>Home</a></li>
+				<li><a href='/log/'>News</a></li>
+				<li><a href='/contact/'>Contact</a></li>
+			  </ul>
+			</div> <!--well bs-sidebar affix-->
+		  </div> <!--col-sm-2-->
+		  <div class="col-sm-10">
+
+			<div class='container-fluid'>
+			<br><br>
+			   {% block content %}
+			   {% endblock %}
+			</div>
+		  </div>
+		</div>
+	</div>
+	<footer>
+		<div class="container-fluid" style='margin-left:15px'>
+			<p><a href="/contact/" target="blank">Contact</a> | <a href="#" target="blank">LinkedIn</a> | <a href="#" target="blank">Twitter</a> | <a href="#" target="blank">Google+</a></p>
+		</div>
+	</footer>
+
+</body>
+
+</html>

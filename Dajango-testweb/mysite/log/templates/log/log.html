@@ -1,0 +1,30 @@
+{% extends "personal/header.html" %}
+
+{% block content%}
+
+
+<style>
+
+.container-fluid{
+  color: black;
+}
+
+.col-md-3{
+  background-color:rgba(255, 255, 255, 0.8);
+  color: black;
+  text-align: left;
+}
+
+</style>
+
+
+  <link rel="stylesheet" href="../static/log/css/homefixlog.css">
+  <div class="container-fluid">
+    <div class="col-md-3"><h3>News</h3>
+    {% for post in object_list %}
+    <h5>{{post.date|date:"Y-m-d"}}<a href="/log/{{post.id}}"> {{post.title}}</a></h5>
+    {%endfor%}
+  </div>
+  </div>
+
+{% endblock %}
