@@ -279,6 +279,7 @@ while keep_running: # loop untill we want to Exit
         current_time = time.time()
 
         if(current_time - keepalive_time) > 900:
+            logging.add_log(0, "A keepalive was sent")
             connection.keepalive(active_socket_file)
             keepalive_time = current_time
 

@@ -235,12 +235,15 @@ DBCon = database.login()
 #database.add_tow_plane(DBCon, 'TAP', '0xBBBBBA')
 #database.add_tow_plane(DBCon, 'TUC', '0xBBBBBB')
 #database.add_tow_plane(DBCon, 'TEM', '0xBBBBBC')
+Glider_id = 'AAAAAA'
+Towing_id = 'BBBBBB'
 
 glider_id_array = database.get_glider_ids(DBCon)
 towingplane_id_array = database.get_tow_plane_ids(DBCon)
-v = helpers.main_func(libfap, glider_id_array, towingplane_id_array, DBCon,"FLRAAAAAA>APRS,qAS,LSTB:/185726h4658.70N/00707.72Ez090/002/A=000006!W37! id06AAAAAA +020fpm +0.0rot 55.2dB 0e -6.2kHz gps4x6 s6.01 h03 rDDACC4 +5.0dBm hearD7EA hearDA95")
+#v = helpers.main_func(libfap, glider_id_array, towingplane_id_array, DBCon,("FLR%s>APRS,qAS,LSTB:/165745h4658.70N/00707.72Ez090/002/A=000006 !W37! id06%s +020fpm +0.0rot 55.2dB 0e -6.2kHz gps4x6 s6.01 h03 rDDACC4 +5.0dBm hearD7EA hearDA95" % (Glider_id, Glider_id)))
+#print v
+v = helpers.main_func(libfap, glider_id_array, towingplane_id_array, DBCon,("FLR%s>APRS,qAS,LSTB:/093702h4658.70N/00707.72Ez090/005/A=000006 !W37! id06%s +020fpm +0.0rot 55.2dB 0e -6.2kHz gps4x6 s6.01 h03 rDDACC4 +5.0dBm hearD7EA hearDA95" % (Towing_id, Towing_id)))
 print v
-
 #print("Gliders registered:")
 #print(database.get_glider_ids(DBCon))
 #print("Tow planes registered:")
