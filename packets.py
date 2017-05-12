@@ -29,7 +29,7 @@ def processing(glider_ids, towing_ids, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
     active_plane_flarms = active_flight(package, database_con)
     if not active_plane_flarms[0]:
-        if fix_connected_plane(active_plane_flarms[1], package, database_con):
+        if fix_connected_plane(towing_ids, active_plane_flarms[1], package, database_con):
             ret = True
             logging.add_log(0, "Plane connected to another flight")
         elif  helpers.get_value_converted_int(package.speed) >= threshold_speed:
@@ -102,16 +102,17 @@ def check_plane_landed(active_plane_flarms, package):
                 return True
     return False
 
-def fix_connected_plane(active_plane_flarms, package, database_con):
+def fix_connected_plane(towing_ids, active_plane_flarms, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
     for e in active_plane_flarms:
         if (e[0] is None or e[1] is None) and (e[2] <= (dif_time + helpers.raw_timestamp_to_seconds(package.raw_timestamp)) and (e[2] >= (-dif_time + helpers.raw_timestamp_to_seconds(package.raw_timestamp)))):
-            if e[0] != package_flarm_id and e[1] is None:
+
+            if e[0] != package_flarm_id and e[1] is None and helpers.array_contains(towing_ids, package_flarm_id):
                 if not database.assign_tow_plane(database_con, helpers.long_to_hex_str(e[0]), helpers.long_to_hex_str(package_flarm_id)):
                     logging.add_log(2, "Adding to database went wrong in fix_connected_plane --- kod 1")
                     return False
                 return True
-            elif e[1] != package_flarm_id and e[0] is None:
+            elif e[1] != package_flarm_id and e[0] is None and not helpers.array_contains(towing_ids, package_flarm_id):
                 if not database.assign_glider(database_con, helpers.long_to_hex_str(package_flarm_id), helpers.long_to_hex_str(e[1])):
                     logging.add_log(2, "Adding to database went wrong in fix_connected_plane --- kod 2")
                     return False
