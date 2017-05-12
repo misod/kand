@@ -29,7 +29,7 @@ def processing(glider_ids, towing_ids, package, database_con):
     package_flarm_id = helpers.get_flarm_id(package)
     active_plane_flarms = active_flight(package, database_con)
     if not active_plane_flarms[0]:
-        if fix_connected_plane(towing_ids, active_plane_flarms[1], package, database_con):
+        if helpers.get_value_converted_int(package.speed) >= threshold_speed and fix_connected_plane(towing_ids, active_plane_flarms[1], package, database_con):
             ret = True
             logging.add_log(0, "Plane connected to another flight")
         elif  helpers.get_value_converted_int(package.speed) >= threshold_speed:
